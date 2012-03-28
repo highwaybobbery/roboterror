@@ -1,6 +1,7 @@
 When /^I sign up as "([^"]*)"$/ do |email|
   visit root_path
   fill_in "Email", with: email
+  click_button "Sign Up"
 end
 
 Then /^I should be logged in$/ do
