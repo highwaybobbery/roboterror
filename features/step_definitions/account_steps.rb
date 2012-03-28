@@ -4,8 +4,8 @@ When /^I sign up as "([^"]*)"$/ do |email|
   click_button "Sign Up"
 end
 
-Then /^I should be logged in$/ do
-  pending # express the regexp above with the code you wish you had
+Then /^I should be signed in as "([^"]*)"$/ do |email|
+  page.should have_css( "[data-role=user-identification]", text: email )
 end
 
 Given /^the following user exists$/ do |table|
