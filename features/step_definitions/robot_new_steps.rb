@@ -1,7 +1,7 @@
 Then /^I should be able to create a robot$/ do
   click_link "Create a Robot"
   fill_in( "Robot name", with: "Robbie" )
-  click( "Deployz!!" )
+  click_button( "Deployz!!" )
 end
 
 Then /^I should see the robot on my hompage$/ do
