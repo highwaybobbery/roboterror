@@ -16,3 +16,8 @@ end
 Then /^I should not be signed in$/ do
   page.should_not have_css( "[data-role=user-identification]")
 end
+
+Given /^I am signed in as "([^"]*)"$/ do |email|
+  step %{I sign up as "#{email}"}
+end
+
