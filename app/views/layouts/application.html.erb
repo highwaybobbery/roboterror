@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Roboterror</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-<div data-role="user-identification"><%= session[:current_user] %></div>
-<%= yield %>
+  <head>
+    <title>Roboterror</title>
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <% if session[:current_user].present? %>
+      <div data-role="user-identification">
+        <%= session[:current_user] %> 
+        <%= link_to "Sign out", session_path, method: :delete %>
+        <% p  link_to "Sign out", session_path, method: :delete %>
+      </div>
+    <% end %>
+    <%= yield %>
 
-</body>
+  </body>
 </html>

@@ -4,20 +4,15 @@ When /^I sign up as "([^"]*)"$/ do |email|
   click_button "Sign Up"
 end
 
+
+Then /^I sign out$/ do
+  click_link( "Sign out" )
+end
+
 Then /^I should be signed in as "([^"]*)"$/ do |email|
   page.should have_css( "[data-role=user-identification]", text: email )
 end
 
-Given /^the following user exists$/ do |table|
-  # table is a Cucumber::Ast::Table
-  pending # express the regexp above with the code you wish you had
+Then /^I should not be signed in$/ do
+  page.should_not have_css( "[data-role=user-identification]")
 end
-
-Then /^I should not be logged in$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
-Then /^I should see an error$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
