@@ -1,9 +1,7 @@
 <h1>RobotError</h1>
 <h2 data-role="tagline">a game of robotic shenanigans</h2>
 <% if logged_in? %>
-
   <%= link_to "Create a Robot", new_robot_path %>
-
 <% else %>
 
 <section data-role="welcome-message">
@@ -16,4 +14,3 @@
   <%= form.password_field :password %>
   <%= form.submit "Sign Up" %>
 <% end %>
-
