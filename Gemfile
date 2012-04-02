@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.2'
 gem 'pg'
 gem 'high_voltage'
+gem 'clearance'
 
 group :test do
  gem "cucumber-rails", require: false

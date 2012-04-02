@@ -1,19 +1,19 @@
 <h1>RobotError</h1>
 <h2 data-role="tagline">a game of robotic shenanigans</h2>
-<% if session[:current_user] %>
+<% if logged_in? %>
 
   <%= link_to "Create a Robot", new_robot_path %>
 
 <% else %>
 
-  <section data-role="welcome-message">
-  <p>Welcome the Error Dome. Please sign up or sign in to get started.</p>
-  </section>
-  <%= form_for :user , url: user_path do |form| %>
-    <%= form.label :email %>
-    <%= form.text_field :email %>
-    <%= form.submit "Sign Up" %>
-
-  <% end %>
+<section data-role="welcome-message">
+<p>Welcome the Error Dome. Please sign up or sign in to get started.</p>
+</section>
+<%= form_for User.new  do |form| %>
+  <%= form.label :email %>
+  <%= form.text_field :email %>
+  <%= form.label :password %>
+  <%= form.password_field :password %>
+  <%= form.submit "Sign Up" %>
 <% end %>
 

@@ -8,11 +8,10 @@
   </head>
   <body>
     <div class="page-wrapper">
-    <% if session[:current_user].present? %>
+    <% if signed_in? %>
       <div data-role="user-identification">
-        <%= session[:current_user] %> 
-        <%= link_to "Sign out", session_path, method: :delete %>
-        <% p  link_to "Sign out", session_path, method: :delete %>
+        <%= current_user.email %> 
+        <%= link_to "Sign out", "/sign_out", method: :delete %>
       </div>
     <% end %>
     <%= yield %>
