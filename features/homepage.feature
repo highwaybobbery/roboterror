@@ -8,4 +8,5 @@ Feature: View public homeage
     Then I should see the application name
     And I should see the application tagline
     And I should see the welcome message
-
+    And I should see the sign in link
+    And I should see the sign up form

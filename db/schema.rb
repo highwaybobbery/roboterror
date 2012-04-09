@@ -11,13 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120402004904) do
+ActiveRecord::Schema.define(:version => 20120407235044) do
 
   create_table "robots", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "user_id"
   end
+
+  add_index "robots", ["user_id"], :name => "index_robots_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email"
@@ -33,4 +36,3 @@ ActiveRecord::Schema.define(:version => 20120402004904) do
   add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
 
 end
-

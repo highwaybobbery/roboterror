@@ -13,7 +13,16 @@
         <%= current_user.email %>
         <%= link_to "Sign out", "/sign_out", method: :delete %>
       </div>
+    <% else %>
+      <div data-role="user-sign-in">
+        <%= link_to "Sign in", "/sign_in" %>
+      </div>
     <% end %>
+    <div data-role="flash">
+    <% flash.each do |key, value| -%>
+      <div class="flash <%= key %>"><%= value %></div>
+    <% end -%>
+    </div>
     <%= yield %>
     </div>
   </body>

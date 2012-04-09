@@ -13,3 +13,11 @@ end
 Then /^I should see the welcome message$/ do
   page.should have_css("section[data-role=welcome-message]")
 end
+
+Then /^I should see the sign in link$/ do
+  page.should have_link("Sign in")
+end
+
+Then /^I should see the sign up form$/ do
+  page.should have_css("section[data-role=sign-up]")
+end

@@ -19,5 +19,6 @@ Spork.prefork do
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 end
 
-Spork.each_run { }
+Spork.each_run do
+end
 

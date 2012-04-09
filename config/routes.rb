@@ -1,6 +1,6 @@
 Roboterror::Application.routes.draw do
 
-  root to: "high_voltage/pages#show", id: "homepage"
+  root to: "homepages#index"
 
-  resources :robots,    :only => ['index', 'new', 'create']
+  resources :robots,    :only => ['index', 'show', 'new', 'create', 'edit', 'update', 'destroy']
 end

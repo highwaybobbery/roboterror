@@ -1,0 +1,21 @@
+<h1>RobotError</h1>
+<h2 data-role="tagline">a game of robotic shenanigans</h2>
+<% if current_user %>
+  <section data-role="robots">
+    <%= render current_user.robots %>
+    <div>
+      <%= link_to "Create a Robot", new_robot_path %>
+    </div>
+  </section>
+<% else %>
+  <section data-role="welcome-message">
+  <p>Welcome the Error Dome. Please sign up or sign in to get started.</p> </section>
+  <section data-role="sign-up">
+  <h3>Sign up today!</h3>
+  <%= semantic_form_for User.new do |f| %>
+    <%= f.input :email %>
+    <%= f.input :password %>
+    <%= f.action :submit, :as => :button %>
+  <% end %>
+  </section>
+<% end %>
