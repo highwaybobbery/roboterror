@@ -11,15 +11,38 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120407235044) do
+ActiveRecord::Schema.define(:version => 20120417213502) do
+
+  create_table "chasses", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "equipment", :force => true do |t|
+    t.string  "name"
+    t.integer "price"
+  end
+
+  create_table "inventories", :force => true do |t|
+    t.integer "equipment_id"
+    t.integer "user_id"
+    t.integer "robot_id"
+    t.integer "user"
+    t.integer "equipment"
+    t.integer "robot"
+    t.integer "price"
+  end
 
   create_table "robots", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "user_id"
+    t.integer  "chassis_id"
   end
 
+  add_index "robots", ["chassis_id"], :name => "index_robots_on_chassis_id"
   add_index "robots", ["user_id"], :name => "index_robots_on_user_id"
 
   create_table "users", :force => true do |t|
@@ -30,6 +53,8 @@ ActiveRecord::Schema.define(:version => 20120407235044) do
     t.string   "remember_token",     :limit => 128
     t.datetime "created_at",                        :null => false
     t.datetime "updated_at",                        :null => false
+    t.boolean  "admin"
+    t.integer  "balance"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

@@ -1,6 +1,7 @@
 Given /^I create a robot named "([^"]*)"$/ do |name|
   click_link "Create a Robot"
-  fill_in( "Robot name", with: "#{name}" )
+  fill_in( "Robot name", with: "#{name}")
+  select("Medium", from: "Chassis")
   click_button( "Deployz!!" )
 end
 
@@ -23,4 +24,12 @@ end
 
 Then /^I should be able to view "([^"]*)"$/ do |robot|
   click_link(robot)
+end
+
+Given /^There is a robot$/ do
+  robot = create(:robot)
+end
+
+Then /^I should be awesome$/ do
+  pending # express the regexp above with the code you wish you had
 end

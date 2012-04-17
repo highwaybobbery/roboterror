@@ -1,8 +1,9 @@
 require "rubygems"
 require "spork"
 
+require 'cucumber/rails'
 Spork.prefork do
-  require 'cucumber/rails'
+ load "#{Rails.root}/db/seeds.rb"
 
   Capybara.default_selector = :css
   ActionController::Base.allow_rescue = false
@@ -14,7 +15,7 @@ Spork.prefork do
   end
 
   Cucumber::Rails::Database.javascript_strategy = :truncation
-
+  World FactoryGirl::Syntax::Methods
   require "factory_girl/step_definitions"
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 end

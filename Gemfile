@@ -10,6 +10,7 @@ group :test do
  gem "cucumber-rails", require: false
  gem "database_cleaner"
  gem "spork"
+ gem "launchy"
  gem "guard-rspec"
  gem "guard-cucumber"
  gem "guard-spork"

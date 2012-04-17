@@ -1,0 +1,18 @@
+<table data-role="users">
+  <tr>
+    <th>Email</th>
+    <th>Administrator?</th>
+  </tr>
+  <% @users.each do |user| %>
+    <% disabled = (user == current_user) %>
+    <tr data-user="<%= user.id %>">
+      <td><%= user.email %></td>
+      <td>
+        <%= form_for user, :url => admin_user_path(user), :method => :put do |form| %>
+          <%= form.check_box :admin, :id => "user_#{user.id}_admin", :disabled => disabled %>
+          <%= form.submit "save", :disabled => disabled %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>

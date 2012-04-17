@@ -1,0 +1,5 @@
+<%= semantic_form_for @equipment, :url => admin_equipments_path do |form| %>
+  <%= form.input :name %>
+  <%= form.input :price %>
+  <%= form.action :submit, :as => :button, :label => 'Save' %>
+<% end %>

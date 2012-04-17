@@ -1,0 +1,87 @@
+Initiative : how ready or quick to fight you are. affects roll to set attack order for whole combat
+attack roll : d20 + attack bonus. If roll is higher than armor class of opponent, hit lands
+melee attack bonus : base attack bonus + strength + size bonus
+ranged attack bonus : base attack bonus + dexterity bonus + size modifier + range penalty
+ability damage : some attacks can reduce the stats of an opponent temporarily
+armor class : how hard it is for opponents to land solid damaging blows
+  10 + armor + shield + dexterity modifier + size modifier
+dexterity bonus to ac : does not apply when surprised or incapacitated, limited by armor type
+enhancement bonus : increases armor rating
+deflection : magic/energy barrier increase ac
+natural armor : increases ac base
+dodge bonus : chance to evade, only applies when dexterity does
+hit points : when 0 = disabled -1 = dying -10 = dead
+speed : how far you can move in a round and still act
+  modified by race, armor, magic
+
+space measured in squares = 5 ft. default speed is 15 - 30 ft per round by race and armor
+using double action you can move at double speed, or triple/quad if all out.
+
+saving throws : chance to avoid or reduce effect of special attack d20 + bonuses + ability bonus (dexterity)
+
+attack of opportunity : when moving out of threatened space or making a distracting action while in threatened space gives immediate opportunity for threatening opponent to make a free melee attack
+
+surprise round : if there is a surprise you may take a single action, and surprised opponent gets no dexterity bonus
+
+actions
+time measured in 6 second combat rounds
+usually you get a move and a standard action (or one full round action)
+standard actions: a normal attack or item/skill usage
+move action : move at your speed for 3 seconds or make another action that takes this long.
+free move : if you do not move in a round you can move 5 ft before or after your action
+full round action : no move for round except 5 foot step
+free action : actions that take little or no time may be done as reasonable
+restricted activity : only one action or move, or start / finish a full round action
+
+
+item
+name
+quality
+cost
+size
+weight
+type
+sub_type
+has_many :statistics
+
+armor
+armor bonus
+max dex bonus
+
+weapons
+damage
+damage type
+attack speed
+power
+range
+ammo type
+
+
+chassis : size structure (hp)
+head : defense
+legs:  speed
+power core :  power
+auxiliary core : armor
+left arm : weapon
+right arm : weapon
+
+robot:
+class = chassis -> size
+max hp = stats['structure']
+current damage = 0
+current hp = max hp - current damage
+
+power  :  stats['power']
+power-load : stats['energy-load']
+
+charge-capacity : stats['charge-capacity']
+charge-level : charge-capacity
+charge-rate : power - power-load + stats['charge-rate']
+
+shield-strength : stats['shield-strength']
+shield-absorbtion : stats['shield-absorption']
+
+hit for 100
+
+plutonium core : 64 power, + 3 speed, + 1 melee damage, + 2 shield strength, + 2 strength
+Giant Lazer Blaster : 3d4 damage, ranged, range 72, attack speed :  4, ammo type : energy

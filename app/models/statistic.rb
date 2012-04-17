@@ -1,0 +1,3 @@
+class Statistic
+
+end

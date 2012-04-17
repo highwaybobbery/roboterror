@@ -14,11 +14,11 @@
           <%= link_to "Sign out", "/sign_out", method: :delete %>
           <%= admin_link %>
         </div>
-      <% else %>
-      <div data-role="user-sign-in">
-        <%= link_to "Sign in", "/sign_in" %>
-      </div>
-    <% end %>
+      <% end %>
+      <nav data-role="admin-navigation">
+        <%= link_to "Users", admin_users_path %>
+        <%= link_to "Equipment", admin_equipments_path %>
+      </nav>
     <div data-role="flash">
     <% flash.each do |key, value| -%>
       <div class="flash <%= key %>"><%= value %></div>

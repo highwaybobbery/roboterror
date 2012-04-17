@@ -1,0 +1,14 @@
+<div data-role="equipment_actios">
+  <%= link_to "New Equipment", new_admin_equipment_path %>
+</div>
+<table data-role="equipment">
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>&nbsp;</th>
+  </tr>
+  <% @equipment.each do |equipment| %>
+    <tr data-equipment="<%= equipment.id %>">
+      <td><%= equipment.name %></td>
+      <td><%= equipment.price %></td>
+      <td></td>
