@@ -1,26 +1,12 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
 development:
-  adapter: postgresql
-  encoding: unicode
+  <<: *default
   database: roboterror_development
-  pool: 5
-  username: alexberry
-  password: anl3Byt3r
 
-test: &test
-  adapter: postgresql
-  encoding: unicode
+test:
+  <<: *default
   database: roboterror_test
-  pool: 5
-  username: alexberry
-  password: ankl3Byt3r
-
-production:
-  adapter: postgresql
-  encoding: unicode
-  database: roboterror_production
-  pool: 5
-  username: roboterror
-  password:
-
-cucumber:
-  <<: *test

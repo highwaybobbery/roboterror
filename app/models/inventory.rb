@@ -1,3 +1,5 @@
 class Inventory < ActiveRecord:: Base
-  validates_presence_of :user, :equipment
+  # Validations
+  validates :equipment, presence: true
+  validates :user, presence: true
 end

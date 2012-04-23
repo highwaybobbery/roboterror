@@ -1,8 +1,10 @@
 class Robot < ActiveRecord::Base
-  belongs_to :user
+  # Associations
   belongs_to :chassis
+  belongs_to :user
 
-  %w{user chassis name}.map{|field|
-    validates_presence_of field
-  }
+  # Validations
+  validates :chassis, presence: true
+  validates :name, presence: true
+  validates :user, presence: true
 end

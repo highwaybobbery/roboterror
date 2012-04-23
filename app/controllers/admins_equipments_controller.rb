@@ -11,7 +11,8 @@ class AdminsEquipmentsController < ApplicationController
 
   def create
     @equipment = Equipment.new(params[:equipment])
-    if(@equipment.save)
+
+    if (@equipment.save)
       redirect_to admin_equipments_path
     else
       render :new

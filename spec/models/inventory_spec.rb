@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe Inventory do
-  it{ should validate_presence_of :user }
-  it{ should validate_presence_of :equipment }
+  # Database
+  it { should have_db_column(:created_at) }
+  it { should have_db_column(:updated_at) }
+
+  # Validations
+  it{ should validate_presence_of(:user) }
+  it{ should validate_presence_of(:equipment) }
 end
