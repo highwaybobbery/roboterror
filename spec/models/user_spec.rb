@@ -11,4 +11,14 @@ describe User do
   it { should allow_value(1).for(:balance) }
   it { should allow_value(0).for(:balance) }
   it { should_not allow_value(-1).for(:balance) }
+
+  context "User purchases Equipment" do
+    it{
+      user = FactoryGirl.create(:user)
+      equipment = FactoryGirl.create(:equipment)
+      inventory = user.inventories.build(:equipment_id => equipment.id)
+      price = equipment.price
+      user.spend(price)
+    }
+  end
 end

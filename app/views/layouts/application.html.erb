@@ -7,18 +7,23 @@
     <%= csrf_meta_tags %>
   </head>
   <body class="<%= body_class %>" >
-    <div class="page-wrapper">
+    <div class="page-wrapper clearfix">
       <% if signed_in? %>
-        <div data-role="user-identification">
-          <%= current_user.email %>
+        <nav class="top right" data-role="user-identification">
+          <span class="balance" data-role="balance">&#167;<%= current_user.balance %></span>
+          <%= current_user.email %> |
           <%= link_to "Sign out", "/sign_out", method: :delete %>
           <%= admin_link %>
-        </div>
+        </nav>
       <% else %>
-      <div data-role="user-sign-in">
+      <nav class="top right" data-role="user-sign-in">
         <%= link_to "Sign in", "/sign_in" %>
-      </div>
+      </nav>
     <% end %>
+    <div class="branding">
+      <h1><%= link_to "RobotError", root_path %></h1>
+      <h2>a game of robotic shenanigans</h2>
+    </div>
     <div data-role="flash">
     <% flash.each do |key, value| -%>
       <div class="flash <%= key %>"><%= value %></div>

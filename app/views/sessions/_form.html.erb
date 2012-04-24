@@ -1,0 +1,9 @@
+<%= semantic_form_for :session, :url => session_path do |f| %>
+  <%= f.inputs do %>
+    <%= f.input :email, :as => :email  %>
+    <%= f.input :password %>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.action :submit, :as => :button, :label => "Sign in" %>
+  <% end %>
+<% end %>

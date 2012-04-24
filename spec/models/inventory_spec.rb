@@ -8,4 +8,9 @@ describe Inventory do
   # Validations
   it{ should validate_presence_of(:user) }
   it{ should validate_presence_of(:equipment) }
+
+  # Associations
+  it{ should belong_to :user }
+  it{ should belong_to :equipment }
+  it{ should belong_to :robot }
 end

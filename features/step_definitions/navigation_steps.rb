@@ -12,3 +12,8 @@ When /^I visit the admin equipment page$/ do
   step %{I visit the admin homepage}
   click_link "Equipment"
 end
+
+When /^I visit the purchase equipment page$/ do
+  visit root_path
+  click_link "Purchase Equipment"
+end

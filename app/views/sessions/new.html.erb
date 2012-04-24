@@ -1,0 +1,12 @@
+<section>
+  <h2>Sign in</h2>
+  <%= render :partial => '/sessions/form' %>
+  <ul class="actions">
+    <li>
+     New user? <%= link_to "Sign up", sign_up_path %>
+    </li>
+    <li>
+     Forgot your password? <%= link_to "Reset Password", new_password_path %>
+    </li>
+  </ul>
+</section>

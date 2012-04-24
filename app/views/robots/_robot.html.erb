@@ -1,1 +1,6 @@
-<p><%= link_to robot.name, robot_path(robot) %> <%= link_to "edit", edit_robot_path(robot) %> <%= link_to "delete", robot_path(robot), method: 'delete' %></p>
+<tr>
+  <td><%= link_to robot.name, robot_path(robot) %></td>
+  <td><span class="won">20</span>/<span class="lost">30</span></td>
+  <td class="green">§2,500</td>
+  <td><%= link_to "edit", edit_robot_path(robot) %> <%= link_to "delete", robot_path(robot), method: 'delete' %></td>
+</tr>

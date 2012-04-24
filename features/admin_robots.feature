@@ -4,4 +4,3 @@ Feature: As an admin
 
   Scenario: Robots Index
     Given There is a robot
-    Then I should be awesome

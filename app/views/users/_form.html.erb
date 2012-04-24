@@ -1,0 +1,9 @@
+<%= semantic_form_for @user, :url => users_path do |f| %>
+  <%= f.inputs do %>
+    <%= f.input :email %>
+    <%= f.input :password %>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.action :submit, :as => :button, :label => "Sign up" %>
+  <% end %>
+<% end %>

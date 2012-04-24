@@ -10,7 +10,7 @@ end
 
 Then /^the user "([^"]*)" is not an admin$/ do |email|
   user = User.find_by_email(email)
-  within(:css, "tr[data-user='#{user.id}']") do
+  within("[data-user='#{user.id}']") do
     checkbox = find(:css, "input[type=checkbox]")
     checkbox.should_not be_checked
   end
@@ -18,7 +18,7 @@ end
 
 When /^I make the user "([^"]*)" an admin$/ do |email|
   user = User.find_by_email(email)
-  within(:css, "tr[data-user='#{user.id}']") do
+  within("[data-user='#{user.id}']") do
     check("user_#{user.id}_admin")
     click_button "save"
   end
@@ -26,8 +26,15 @@ end
 
 Then /^the user "([^"]*)" is an admin$/ do |email|
   user = User.find_by_email(email)
-  within(:css, "tr[data-user='#{user.id}']") do
+  within("[data-user='#{user.id}']") do
     checkbox = find(:css, "input[type=checkbox]")
     checkbox.should be_checked
+  end
+end
+
+Then /^I should have "([^"]*)" credits$/ do |amount|
+  visit root_path
+  within("[data-role=balance]") do
+    assert has_content?(amount)
   end
 end

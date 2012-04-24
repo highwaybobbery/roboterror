@@ -7,6 +7,7 @@ gem 'clearance'
 gem 'formtastic'
 
 group :test do
+ gem "pry"
  gem "cucumber-rails", require: false
  gem "database_cleaner"
  gem "spork"

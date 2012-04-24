@@ -1,21 +1,104 @@
-<h1>RobotError</h1>
-<h2 data-role="tagline">a game of robotic shenanigans</h2>
 <% if current_user %>
-  <section data-role="robots">
-    <%= render current_user.robots %>
+  <section class="half left">
+    <h2>Pick a fight!</h2>
+    <table>
+      <tr>
+        <th>Opponent</th>
+        <th>Career Record</th>
+        <th>Total Value</th>
+      </tr>
+      <tr>
+        <td><a href="#">Jimmy The Hat</a></td>
+        <td><span class="won">20</span>/<span class="lost">30</span></td>
+        <td class="green">§2,500</td>
+      </tr>
+      <tr>
+        <td><a href="#">Leroy Jenkins</a></td>
+        <td><span class="won">20</span>/<span class="lost">30</span></td>
+        <td class="green">§1,500</td>
+      </tr>
+      <tr>
+        <td><a href="#">Tim Toady</a></td>
+        <td><span class="won">20</span>/<span class="lost">30</span></td>
+        <td class="green">§500</td>
+      </tr>
+    </table>
+  </section>
+  <section class="half right">
+    <h2>Combat Log</h2>
+    <table>
+      <tr>
+        <th>Your Robot</th>
+        <th>Opponent</th>
+        <th>Payout</th>
+      </tr>
+      <tr>
+        <td class="lost">Ralph</td>
+        <td class="won">Leroy Jenkins<div class="colorize right">(70%)</div></td>
+        <td>§25</td>
+      </tr>
+      <tr>
+        <td class="won">Jimbo<div class="colorize right">(90%)</div></td>
+        <td class="lost">Bubba Phat</td>
+        <td>§1500</td>
+      </tr>
+      <tr>
+        <td class="won">Ralph<div class="colorize right">(35%)</div></td>
+        <td class="lost">Leroy Jenkins</td>
+        <td>§250</td>
+      </tr>
+      <tr>
+        <td class="lost">Ralph</td>
+        <td class="won">Leroy Jenkins<div class="colorize right">(70%)</div></td>
+        <td>§25</td>
+      </tr>
+    </table>
+  <script type="text/javascript">
+    $('.colorize').each(function(){
+      t = $(this).text()
+      m = /\d+/
+      if(!m) return
+      n = t.match(m)
+      g = 128
+      h = parseInt((n/100)*g)
+      $(this).css({color: 'hsl(' + h +',100% ,33%)'})
+    })
+  </script>
+  </section>
+  <section class="half left" data-role="robots">
+   <h2>Robot Fleet</h2>
+   <%= render 'robots/robots' %>
     <div>
-      <%= link_to "Create a Robot", new_robot_path %>
+      <%= link_to "Create a Robot", new_robot_path, :class => 'button' %>
     </div>
+  </section>
+  <section class="half right" data-role="inventory">
+    <h2>Iventory</h2>
+    <%= render 'inventories/inventories' %>
+  <div>
+    <%= link_to "Purchase Equipment", new_inventory_path %>
+  </div>
   </section>
 <% else %>
   <section data-role="welcome-message">
   <p>Welcome the Error Dome. Please sign up or sign in to get started.</p> </section>
-  <section data-role="sign-up">
-  <h3>Sign up today!</h3>
-  <%= semantic_form_for User.new do |f| %>
-    <%= f.input :email %>
-    <%= f.input :password %>
-    <%= f.action :submit, :as => :button %>
-  <% end %>
+  <section class="third left" data-role="sign-up">
+    <h3>New users</h3>
+    <%= render 'users/form' %>
+  </section>
+  <section class="third middle">
+    <h3>Why Robots are Cool</h3>
+    <p>In short this paragraph of text will outlind the key benefits of virtual
+       robot combat with your friends. It is quite clear after reading this that
+       users should sign up now!</p>
+    <ul>
+      <li>Key benefit number 1</li>
+      <li>Another Key Benefit</li>
+      <li>The 'Final' bullet</li>
+    </ul>
+  </section>
+  <section class="third right" data-role="sign-in">
+    <h3>Returning users</h3>
+    <%= render 'sessions/form' %>
   </section>
 <% end %>

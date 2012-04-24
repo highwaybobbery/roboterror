@@ -30,9 +30,6 @@ ActiveRecord::Schema.define(:version => 20120423055424) do
     t.integer  "equipment_id"
     t.integer  "user_id"
     t.integer  "robot_id"
-    t.integer  "user"
-    t.integer  "equipment"
-    t.integer  "robot"
     t.integer  "price"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
@@ -55,10 +52,10 @@ ActiveRecord::Schema.define(:version => 20120423055424) do
     t.string   "salt",               :limit => 128
     t.string   "confirmation_token", :limit => 128
     t.string   "remember_token",     :limit => 128
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
     t.boolean  "admin"
-    t.integer  "balance"
+    t.integer  "balance",                           :default => 1000
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
