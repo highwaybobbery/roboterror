@@ -27,7 +27,8 @@ Then /^I should be able to view "([^"]*)"$/ do |robot|
 end
 
 Given /^There is a robot$/ do
-  robot = create(:robot)
+  user = create(:user)
+  robot = create(:robot, :user => user)
 end
 
 Then /^I should be awesome$/ do

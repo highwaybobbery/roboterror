@@ -1,7 +1,6 @@
 Given /^I am signed in as an admin$/ do
-  email = Factory.next(:email)
-  user = create(:admin, :email => email)
-  step %{I sign in with "#{email}"}
+  user = create(:admin)
+  step %{I sign in with "#{user.email}"}
 end
 
 Given /^a user "([^"]*)" exists$/ do |email|
@@ -33,7 +32,6 @@ Then /^the user "([^"]*)" is an admin$/ do |email|
 end
 
 Then /^I should have "([^"]*)" credits$/ do |amount|
-  visit root_path
   within("[data-role=balance]") do
     assert has_content?(amount)
   end
