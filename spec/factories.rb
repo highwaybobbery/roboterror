@@ -35,4 +35,10 @@ FactoryGirl.define do
     price 500
     name { Factory.next(:equipment_name) }
   end
+
+  factory :stat do
+    name 'pep'
+    price 1
+    price_growth 1.5
+  end
 end

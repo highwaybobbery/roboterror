@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120423055424) do
+ActiveRecord::Schema.define(:version => 20120425020738) do
 
   create_table "chasses", :force => true do |t|
     t.string   "name"
@@ -45,6 +45,14 @@ ActiveRecord::Schema.define(:version => 20120423055424) do
 
   add_index "robots", ["chassis_id"], :name => "index_robots_on_chassis_id"
   add_index "robots", ["user_id"], :name => "index_robots_on_user_id"
+
+  create_table "stats", :force => true do |t|
+    t.string   "name",                          :null => false
+    t.integer  "price",        :default => 1,   :null => false
+    t.decimal  "price_growth", :default => 1.0, :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email"

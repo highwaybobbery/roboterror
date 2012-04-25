@@ -85,3 +85,11 @@ hit for 100
 
 plutonium core : 64 power, + 3 speed, + 1 melee damage, + 2 shield strength, + 2 strength
 Giant Lazer Blaster : 3d4 damage, ranged, range 72, attack speed :  4, ammo type : energy
+
+Stat
+id, name, price, price_growth
+
+Equipment
+hm Stats
+value = sum stats value
+
