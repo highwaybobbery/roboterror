@@ -32,7 +32,6 @@ FactoryGirl.define do
   end
 
   factory :equipment do
-    price 500
     name { Factory.next(:equipment_name) }
   end
 
@@ -40,5 +39,11 @@ FactoryGirl.define do
     name 'pep'
     price 1
     price_growth 1.5
+  end
+
+  factory :equipment_stat do
+    modifier 1
+    stat { Factory.create(:stat) }
+    equipment { Factory.create(:equipment) }
   end
 end

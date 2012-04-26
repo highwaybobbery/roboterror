@@ -5,9 +5,9 @@ gem 'pg'
 gem 'high_voltage'
 gem 'clearance'
 gem 'formtastic'
+gem "pry"
 
 group :test do
- gem "pry"
  gem "cucumber-rails", require: false
  gem "database_cleaner"
  gem "spork"

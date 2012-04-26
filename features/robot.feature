@@ -3,28 +3,21 @@ Feature: As a user
   I should be able to add, edit and delete robots
 
   Scenario: Create a robot
-    I should be able to create new robots
     Given I sign in
-    And I create a robot named "Robbie"
-    Then  I should see the robot "Robbie" on my homepage
+    And I create a robot
+    Then  I see the robot
 
   Scenario: Edit a robot
-    I should be able to edit my robot
-
     Given I sign in
-    And I create a robot named "Robbie"
-    Then I should be able to edit "Robbie"
+    And I create a robot
+    Then I edit the robot
 
   Scenario: Delete a robot
-    I should be able to delete my robot
-
    Given I sign in
-   And I create a robot named "Robbie"
-   Then I should be able to delete "Robbie"
+   And I create a robot
+   Then I delete the robot
 
   Scenario: View a robot
-    I should be able to view my robots
-
     Given I sign in
-    And I create a robot named "Robbie"
-    Then I should be able to view "Robbie"
+    And I create a robot
+    Then I view the robot

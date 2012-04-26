@@ -5,10 +5,9 @@ Feature: Purchase Equipment
 
   Scenario: Purchase affordable equipment
     Given I sign in
-    And there is a "Generic Death Claw" equipment for "250"
-    Then I should have "1000" credits
+    And an equipment with stats exists
     When I visit the purchase equipment page
-    Then I should see the "Generic Death Claw" in the list of equipment for sale
-    When I purchase the "Generic Death Claw"
-    Then I should have "750" credits
-    And I should see "Generic Death Claw" in my inventory
+    Then I see the equipment in the list of equipment for sale
+    When I purchase the equipment
+    Then I have spent credits
+    And I see the equipment in my inventory

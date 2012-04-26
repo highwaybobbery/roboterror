@@ -5,4 +5,4 @@ Feature: User Homepage
 
   Scenario: User Homepage
   Given I sign in
-  Then I should have "1000" credits
+  Then I have credits

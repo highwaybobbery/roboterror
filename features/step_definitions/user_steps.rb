@@ -31,8 +31,14 @@ Then /^the user "([^"]*)" is an admin$/ do |email|
   end
 end
 
-Then /^I should have "([^"]*)" credits$/ do |amount|
+Then /^I have "([^"]*)" credits$/ do |amount|
   within("[data-role=balance]") do
-    assert has_content?(amount)
+    page.should have_content(amount)
+  end
+end
+
+Then /^I have credits$/ do
+  within("[data-role=balance]") do
+    page.should have_content('1000')
   end
 end

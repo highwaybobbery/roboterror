@@ -5,6 +5,9 @@ describe Inventory do
   it { should have_db_column(:created_at) }
   it { should have_db_column(:updated_at) }
 
+  # Assignment
+  it{ should allow_mass_assignment_of(:equipment_id) }
+
   # Validations
   it{ should validate_presence_of(:user) }
   it{ should validate_presence_of(:equipment) }

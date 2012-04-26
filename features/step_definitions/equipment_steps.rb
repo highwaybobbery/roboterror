@@ -1,39 +1,43 @@
-Then /^I should be able to create equipment$/ do
+Then /^I create equipment$/ do
   click_link "New Equipment"
   fill_in "Name", :with => "Super Soaker"
-  fill_in "Price", :with => 500
   click_button "Save"
 end
 
-Then /^I should see the equipment$/ do
-  equipment = Equipment.find_by_name('Super Soaker')
+Given /^an equipment with stats exists$/ do
+  equipment = create(:equipment)
+  create :equipment_stat, equipment: equipment
+end
+
+Then /^I see the equipment$/ do
+  equipment = Equipment.first
   within("[data-equipment='#{equipment.id}']") do
-    assert has_content?('Super Soaker')
-    assert has_content?('500')
+    page.should have_content(equipment.name)
   end
 end
 
-Given /^there is a "([^"]*)" equipment for "([^"]*)"$/ do |name, price|
-  create(:equipment, :name => name, :price => price)
-end
-
-Then /^I should see the "([^"]*)" in the list of equipment for sale$/ do |name|
-  equipment = Equipment.find_by_name(name)
+Then /^I see the equipment in the list of equipment for sale$/ do
+  equipment = Equipment.first
   within("[data-equipment='#{equipment.id}']") do
-    assert has_content?(name)
+    page.should have_content(equipment.name)
   end
 end
 
-When /^I purchase the "([^"]*)"$/ do |name|
-  equipment = Equipment.find_by_name(name)
+When /^I purchase the equipment$/ do
+  equipment = Equipment.first
   within("[data-equipment='#{equipment.id}']") do
     click_button('Buy')
   end
 end
 
-Then /^I should see "([^"]*)" in my inventory$/ do |name|
-  equipment = Equipment.find_by_name(name)
+Then /^I see the equipment in my inventory$/ do
+  equipment = Equipment.first
   within("[data-inventory]") do
-    assert has_content?(equipment.name)
+    page.should have_content(equipment.name)
   end
+end
+
+Then /^I have spent credits$/ do
+  credits = 1000 - Equipment.first.price
+  step %{I have "#{credits}" credits}
 end

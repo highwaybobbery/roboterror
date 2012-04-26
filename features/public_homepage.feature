@@ -5,5 +5,5 @@ Feature: View public homeage
 
   Scenario:
     Given I am on the public homepage
-    Then I should see the sign in link
-    And I should see the sign up form
+    Then I see the sign in link
+    And I see the sign up form

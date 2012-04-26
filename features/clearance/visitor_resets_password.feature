@@ -19,23 +19,23 @@ Feature: Password reset
     And I follow the password reset link sent to "email@example.com"
     And I update my password with ""
     Then I am told to enter a password
-    And I should be signed out
+    And I am signed out
 
   Scenario: User is signed up and updates his password
     Given I signed up with "email@example.com"
     When I reset the password for "email@example.com"
     And I follow the password reset link sent to "email@example.com"
     And I update my password with "newpassword"
-    Then I should be signed in
+    Then I am signed in
     When I sign out
-    Then I should be signed out
+    Then I am signed out
     When I sign in with "email@example.com" and "newpassword"
-    Then I should be signed in
+    Then I am signed in
 
   Scenario: User who was created before Clearance was installed creates password for first time
     Given a user "email@example.com" exists without a salt, remember token, or password
     When I reset the password for "email@example.com"
     When I follow the password reset link sent to "email@example.com"
     And I update my password with "newpassword"
-    Then I should be signed in
+    Then I am signed in
 

@@ -1,6 +1,4 @@
 class AdminsEquipmentsController < ApplicationController
-  layout 'admin'
-
   def index
     @equipment = Equipment.all
   end
@@ -13,9 +11,15 @@ class AdminsEquipmentsController < ApplicationController
     @equipment = Equipment.new(params[:equipment])
 
     if (@equipment.save)
-      redirect_to admin_equipments_path
+      redirect_to new_admin_equipment_stat_path(@equipment)
     else
       render :new
     end
+  end
+
+  def edit
+    @equipment = Equipment.find(params[:id])
+    @stats = Stat.all
+    @equipment_stat = EquipmentStat.all
   end
 end

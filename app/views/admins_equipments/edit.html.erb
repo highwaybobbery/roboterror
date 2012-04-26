@@ -1,0 +1,40 @@
+<%= render 'admins/navigation' %>
+<section>
+  <h2>Modify Equipment</h2>
+  <%= semantic_form_for @equipment, :url => admin_equipment_path(@equipment), :method => :put do |form| %>
+    <%= form.inputs do %>
+      <%= form.input :name %>
+    <% end %>
+    <%= form.actions do %>
+      <%= form.submit label: 'Save' %>
+    <% end %>
+  <% end %>
+</section>
+<section>
+<h2>Modify Attributes</h2>
+<table data-role="equipment-attributes">
+<tr>
+  <th>Attribute</th>
+  <th>Modifier</th>
+  <th>Cost</th>
+  <th></th>
+</tr>
+<tr data-role="edit-equipment_attributes">
+  <td><%= select_tag "stats",  options_from_collection_for_select(@stats, :id, :name) %></td>
+  <td><%= number_field_tag :modifier, 0, :in => -100...100  %></td>
+  <td data-for="price"></td>
+  <td><button>Save</button></td>
+</tr>
+</table>
+<%= form_tag new_admin_equipment_stat_path(@equipment), method: :post,
+    remote: true, id: :new_stat_form do %>
+  <%= hidden_field_tag :stat_id %>
+  <%= hidden_field_tag :modifier %>
+<% end %>
+<%= form_tag edit_admin_equipment_stat_path(@equipment), method: :put,
+    remote: true, id: :update_stat_form do %>
+  <%= hidden_field_tag :stat_id %>
+  <%= hidden_field_tag :modifier %>
+<% end %>
+
+</section>

@@ -7,6 +7,6 @@ Feature: Sign out
   Scenario: User signs out
     Given I am signed up as "email@example.com"
     When I sign in as "email@example.com"
-    Then I should be signed in
+    Then I am signed in
     When I sign out
-    Then I should be signed out
+    Then I am signed out

@@ -111,12 +111,12 @@ end
 
 # Verification
 
-Then /^I should be signed in$/ do
+Then /^I am signed in$/ do
   visit "/"
   page.should have_content "Sign out"
 end
 
-Then /^I should be signed out$/ do
+Then /^I am signed out$/ do
   visit "/"
   page.should have_content "Sign in"
 end

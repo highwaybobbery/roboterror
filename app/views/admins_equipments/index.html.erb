@@ -1,6 +1,10 @@
+<%= render 'admins/navigation' %>
+<section>
 <div data-role="equipment_actios">
   <%= link_to "New Equipment", new_admin_equipment_path %>
 </div>
+</section>
+<section>
 <table data-role="equipment">
   <tr>
     <th>Name</th>
@@ -11,7 +15,8 @@
     <tr data-equipment="<%= equipment.id %>">
       <td><%= equipment.name %></td>
       <td><%= equipment.price %></td>
-      <td></td>
+      <td><%= link_to "Edit", edit_admin_equipment_path(equipment) %></td>
     </tr>
   <% end %>
 </table>
+</section>

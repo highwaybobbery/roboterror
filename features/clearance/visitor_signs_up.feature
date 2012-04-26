@@ -14,4 +14,4 @@ Feature: Sign up
 
   Scenario: Visitor signs up with valid data
     When I sign up with "email@example.com" and "password"
-    Then I should be signed in
+    Then I am signed in
