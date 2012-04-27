@@ -19,22 +19,79 @@
   <th>Cost</th>
   <th></th>
 </tr>
-<tr data-role="edit-equipment_attributes">
-  <td><%= select_tag "stats",  options_from_collection_for_select(@stats, :id, :name) %></td>
-  <td><%= number_field_tag :modifier, 0, :in => -100...100  %></td>
+<tr data-role="edit_equipment_attributes">
+  <td><%= select_tag "stat_id", options_from_collection_for_select(@stats, :id, :name), id: 'edit_equipment_stat_stat' %></td>
+  <td><%= number_field_tag 'modifier', 0, :in => -100...100, id: 'edit_equipment_stat_modifier' %></td>
   <td data-for="price"></td>
-  <td><button>Save</button></td>
+  <td><button id="edit_equipment_stat_submit">Save</button></td>
 </tr>
 </table>
-<%= form_tag new_admin_equipment_stat_path(@equipment), method: :post,
-    remote: true, id: :new_stat_form do %>
-  <%= hidden_field_tag :stat_id %>
-  <%= hidden_field_tag :modifier %>
+<%= form_tag admin_equipment_stats_path(@equipment), method: :post,
+    remote: true, id: :new_equipment_stat_form do %>
+  <%= hidden_field_tag 'equipment_stat[stat_id]', '', id: :new_equipment_stat_stat %>
+  <%= hidden_field_tag 'equipment_stat[modifier]', '', id: :new_equipment_stat_modifier %>
+  <%= hidden_field_tag 'equipment_stat[equipment_id]', @equipment.id %>
 <% end %>
 <%= form_tag edit_admin_equipment_stat_path(@equipment), method: :put,
-    remote: true, id: :update_stat_form do %>
-  <%= hidden_field_tag :stat_id %>
-  <%= hidden_field_tag :modifier %>
+    remote: true, id: :update_equipment_stat_form do %>
+  <%= hidden_field_tag 'equipment_stat[stat_id]', '', id: :update_equipment_stat_stat %>
+  <%= hidden_field_tag 'equipment_stat[modifier]', '', id: :update_equipment_stat_modifier %>
+  <%= hidden_field_tag 'equipment_stat[equipment_id]', @equipment.id %>
+  <%= hidden_field_tag 'equipment_stat_id', '', id: :update_equipment_stat_id %>
 <% end %>
-
 </section>
+<script>
+  jQuery(function($) {
+    $s = {}
+    $s['input_row'] = $("tr[data-role=edit_equipment_attributes]")
+    $s['input_stat'] = $("#edit_equipment_stat_stat")
+    $s['input_modifier'] = $("#edit_equipment_stat_modifier")
+    $s['input_submit'] = $("#edit_equipment_stat_submit")
+
+    $s['new_form'] = $("#new_equipment_stat_form")
+    $s['new_stat'] = $("#new_equipment_stat_stat")
+    $s['new_modifier'] = $("#new_equipment_stat_modifier")
+
+    test_selectors($s, {verbose: false})
+
+    $s['new_form'].bind("ajax:success", receive_new_equipment_stat)
+    $s['input_submit'].click(send_new_equipment_stat)
+
+    function send_new_equipment_stat(){
+      $s['new_stat'].val($s['input_stat'].val());
+      $s['new_modifier'].val($s['input_modifier'].val());
+      $s['new_form'].submit()
+    }
+    function receive_new_equipment_stat(event, data){
+      console.log(data)
+      $('<tr data-equipment_stat="' + data.equipment_stat.id + '">'+
+        '<td data-role="stat">' + data.equipment_stat.stat_id + '</td>'+
+        '<td data-role="modifier">' + data.equipment_stat.modifier + '</td>'+
+        '<td data-role="price"></td>'+
+        '</tr>').insertBefore($s['input_row']);
+    }
+    function send_update_equipement_stat(){
+
+    }
+    function receive_update_equipment_stat(){
+
+    }
+    function test_selectors(selectors, options){
+      var defaults = {
+        verbose: false
+      }
+      var settings = $.extend(defaults, options)
+
+      console.log("Begin Selector Tests")
+      for(i in selectors){
+        if(selectors[i].length == 0){
+          console.log("Selector Test Failed: " + i)
+        }else{
+          if(settings.verbose){
+            console.log("Passed: " + i)
+          }
+        }
+      }
+    }
+  });
+</script>

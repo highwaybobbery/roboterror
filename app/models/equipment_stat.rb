@@ -1,4 +1,7 @@
 class EquipmentStat < ActiveRecord::Base
+  # Assignment
+  attr_accessible :stat_id, :equipment_id, :modifier
+
   # Associations
   belongs_to :stat
   belongs_to :equipment

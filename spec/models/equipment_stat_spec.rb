@@ -5,6 +5,11 @@ describe EquipmentStat do
   it { should have_db_column(:created_at) }
   it { should have_db_column(:updated_at) }
 
+  # Assignment
+  it{ should allow_mass_assignment_of(:stat_id) }
+  it{ should allow_mass_assignment_of(:equipment_id) }
+  it{ should allow_mass_assignment_of(:modifier) }
+
   # Associations
   it{ should belong_to(:stat) }
   it{ should belong_to(:equipment) }

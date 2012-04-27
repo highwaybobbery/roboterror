@@ -1,6 +1,7 @@
 Given /^I create a robot$/ do
   click_link "Create a Robot"
   fill_in( "Robot name", with: "Robbie")
+  save_and_open_page
   select("Medium", from: "Chassis")
   click_button( "Deployz!!" )
 end
