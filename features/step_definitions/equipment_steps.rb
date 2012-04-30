@@ -16,6 +16,17 @@ Then /^I see the equipment$/ do
   end
 end
 
+Then /^I delete the equipment$/ do
+  equipment = Equipment.first
+  within("[data-equipment='#{equipment.id}']") do
+  click_link "Delete"
+  end
+end
+
+Then /^I do not see the equipment$/ do
+  page.should_not have_css("[data-equipment]")
+end
+
 Then /^I see the equipment in the list of equipment for sale$/ do
   equipment = Equipment.first
   within("[data-equipment='#{equipment.id}']") do

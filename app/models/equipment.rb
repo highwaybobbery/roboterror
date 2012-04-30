@@ -3,9 +3,9 @@ class Equipment < ActiveRecord::Base
   attr_accessible :name
 
   # Associations
-  has_many :inventories
-  has_many :users, :through => :inventories
-  has_many :equipment_stats
+  has_many :inventories, dependent: :destroy
+  has_many :users, through: :inventories
+  has_many :equipment_stats, dependent: :destroy
 
   # Validations
   validates_presence_of :name

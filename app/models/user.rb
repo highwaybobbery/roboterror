@@ -7,8 +7,8 @@ class User < ActiveRecord::Base
 
   # Associations
   has_many :equipment, through: :inventories
-  has_many :inventories
-  has_many :robots
+  has_many :inventories, dependent: :destroy
+  has_many :robots, dependent: :destroy
 
   # Validations
   validates :balance, numericality:

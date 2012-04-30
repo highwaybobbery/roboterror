@@ -9,9 +9,9 @@ describe Equipment do
   it{ should allow_mass_assignment_of(:name) }
 
   # Associations
-  it{ should have_many(:inventories) }
+  it{ should have_many(:inventories).dependent(:destroy) }
   it{ should have_many(:users).through(:inventories) }
-  it{ should have_many(:equipment_stats) }
+  it{ should have_many(:equipment_stats).dependent(:destroy) }
 
   # Validations
   it{ should validate_presence_of(:name) }

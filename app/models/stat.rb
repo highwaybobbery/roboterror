@@ -1,5 +1,9 @@
 class Stat < ActiveRecord::Base
-# Validation
+  # Associations
+  has_many :equipment_stats, dependent: :destroy
+  has_many :equipments, through: :equipment_stats
+
+  # Validation
   validates :name, presence: true
   validates :price, presence: true
   validates :price_growth, presence:true

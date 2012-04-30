@@ -3,8 +3,8 @@ require 'spec_helper'
 describe User do
   # Associations
   it { should have_many(:equipment).through(:inventories) }
-  it { should have_many(:inventories) }
-  it { should have_many(:robots) }
+  it { should have_many(:inventories).dependent(:destroy) }
+  it { should have_many(:robots).dependent(:destroy) }
 
   # Validations
   it { should allow_value(nil).for(:balance) }

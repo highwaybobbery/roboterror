@@ -1,14 +1,18 @@
 require 'spec_helper'
 
 describe Stat do
-  #Database
+  # Database
   it { should have_db_column(:created_at) }
   it { should have_db_column(:updated_at) }
   it { should have_db_column(:name) }
   it { should have_db_column(:price) }
   it { should have_db_column(:price_growth) }
 
-  #Validation
+  # Associations
+  it { should have_many(:equipment_stats).dependent(:destroy) }
+  it { should have_many(:equipments).through(:equipment_stats) }
+
+  # Validations
   it { should validate_presence_of(:name) }
   it { should validate_presence_of(:price) }
   it { should validate_presence_of(:price_growth) }

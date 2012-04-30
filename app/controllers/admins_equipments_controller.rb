@@ -22,4 +22,10 @@ class AdminsEquipmentsController < ApplicationController
     @stats = Stat.all
     @equipment_stats = EquipmentStat.find_all_by_equipment_id(params[:id])
   end
+
+  def destroy
+    @equipment = Equipment.find(params[:id])
+    @equipment.delete
+    redirect_to admin_equipments_path
+  end
 end

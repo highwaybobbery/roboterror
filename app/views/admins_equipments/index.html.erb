@@ -15,7 +15,7 @@
     <tr data-equipment="<%= equipment.id %>">
       <td><%= equipment.name %></td>
       <td><%= equipment.price %></td>
-      <td><%= link_to "Edit", edit_admin_equipment_path(equipment) %></td>
+      <td><%= link_to "Edit", edit_admin_equipment_path(equipment) %> | <%= link_to "Delete", admin_equipment_path(equipment), method: :delete %></td>
     </tr>
   <% end %>
 </table>
