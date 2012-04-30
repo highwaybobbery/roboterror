@@ -1,5 +1,6 @@
 Then /^I see the equipment stats page$/ do
-  page.should have_content("Equipment Stats")
+  page.should have_content("Modify Equipment")
+  page.should have_css("[data-role=equipment_price]")
 end
 
 Then /^I add stats to the equipment$/ do
@@ -13,5 +14,28 @@ end
 
 Then /^I see the equipment with an updated price$/ do
   equipment_stat = EquipmentStat.first
-  page.should have_css("tr[data-equipment_stat='#{equipment_stat.id}']")
+  page.should have_css("tr[data-equipment_stat]")
+end
+
+Then /^I see the equipment stats$/ do
+  equipment_stat = EquipmentStat.first
+  within("tr[data-equipment_stat='#{equipment_stat.id}']") do
+    page.should have_content(equipment_stat.stat.name)
+    page.should have_content(equipment_stat.modifier)
+    page.should have_content(equipment_stat.price)
+    page.should have_button("Edit")
+    page.should have_button("Remove")
+  end
+end
+
+Given /^I remove the equipment stat$/ do
+  equipment_stat = EquipmentStat.first
+  page.should have_css('form#delete_equipment_stat_form')
+  within("tr[data-equipment_stat='#{equipment_stat.id}']") do
+    click_button("Remove")
+  end
+end
+
+Then /^the equipment should have no stats$/ do
+  page.should_not have_css("tr[data-equipment_stat]")
 end

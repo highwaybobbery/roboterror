@@ -33,6 +33,7 @@ FactoryGirl.define do
 
   factory :equipment do
     name { Factory.next(:equipment_name) }
+    price 0
   end
 
   factory :stat do

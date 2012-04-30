@@ -24,7 +24,7 @@ describe Equipment do
     end
 
     it "should set the price of the equipment before validation" do
-      @equipment.price.should == nil
+      @equipment.price.should == 0
       @equipment_stat1 = create(:equipment_stat, modifier: 3, stat: @stat1, equipment: @equipment)
       @equipment_stat1.price.should == 30
       @equipment.price.should == 30

@@ -96,14 +96,15 @@ body{
     ul.actions{
       list-style-type:none;
       margin: 0;
-      padding: 0; 
+      padding: 0;
     }
     section{
-      padding: 5px 8px;
       background: #f3f3f3;
       border: 2px solid #ccc;
       border-radius: 4px;
       margin-bottom: 10px;
+      padding: 5px 8px;
+      position: relative;
 
       &.half{
         float: left;
@@ -148,13 +149,20 @@ body{
           &.right{
             text-align: right;
           }
-          div.right{ 
+          div.right{
             float: right;
           }
         }
       }
     }
   }
+}
+.left.half{
+ width: 50%;
+ float: right;
+}
+.money{
+  color: #393;
 }
 .clearfix:after {
   content: ".";

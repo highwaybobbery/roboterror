@@ -5,7 +5,7 @@ Roboterror::Application.routes.draw do
     resources :users, only: ['index', 'update'], controller: 'admins_users'
     resources :equipments, only: ['index', 'new', 'create', 'edit', 'update'],
               controller: 'admins_equipments' do
-      resources :stats, only: ['new', 'create', 'edit', 'update'], controller: 'admins_equipments_stats'
+      resources :stats, only: ['new', 'create', 'edit', 'update', 'destroy'], controller: 'admins_equipments_stats'
     end
   end
 

@@ -22,6 +22,7 @@ describe AdminsEquipmentsStatsController do
         json = response_json
         json.should include 'equipment'
         json.should include 'equipment_stat'
+        json['equipment_stat'].should include 'stat_name'
         json.should_not include 'error'
       end
     end
@@ -34,8 +35,8 @@ describe AdminsEquipmentsStatsController do
       end
 
       it "updates an existing equipment_stat" do
-        json = { :format => 'json', :equipment_stat =>
-          { :id => @equipment_stat.id, :equipment_id => @equipment.id,
+        json = { :format => 'json', :equipment_stat_id => @equipment_stat.id, :equipment_stat =>
+          { :equipment_id => @equipment.id,
             :stat_id => @stat.id, :modifier => 4 } }
 
         put :update, json

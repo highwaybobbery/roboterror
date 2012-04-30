@@ -2,6 +2,7 @@
 <section>
   <h2>Modify Equipment</h2>
   <%= semantic_form_for @equipment, :url => admin_equipment_path(@equipment), :method => :put do |form| %>
+    <div class="left half">Price: <span class="money">§<span data-role="equipment_price"><%= @equipment.price %></span></span></div>
     <%= form.inputs do %>
       <%= form.input :name %>
     <% end %>
@@ -19,11 +20,12 @@
   <th>Cost</th>
   <th></th>
 </tr>
+<%= render collection: @equipment_stats, partial: 'admins_equipments/equipment_stats' %>
 <tr data-role="edit_equipment_attributes">
   <td><%= select_tag "stat_id", options_from_collection_for_select(@stats, :id, :name), id: 'edit_equipment_stat_stat' %></td>
-  <td><%= number_field_tag 'modifier', 0, :in => -100...100, id: 'edit_equipment_stat_modifier' %></td>
+  <td><%= number_field_tag 'modifier', 1, :in => -100...100, id: 'edit_equipment_stat_modifier' %></td>
   <td data-for="price"></td>
-  <td><button id="edit_equipment_stat_submit">Save</button></td>
+  <td data-role="buttons"><button data-role="save">Save</button></td>
 </tr>
 </table>
 <%= form_tag admin_equipment_stats_path(@equipment), method: :post,
@@ -32,50 +34,159 @@
   <%= hidden_field_tag 'equipment_stat[modifier]', '', id: :new_equipment_stat_modifier %>
   <%= hidden_field_tag 'equipment_stat[equipment_id]', @equipment.id %>
 <% end %>
-<%= form_tag edit_admin_equipment_stat_path(@equipment), method: :put,
+<%= form_tag admin_equipment_stat_path(@equipment, 1), method: :put,
     remote: true, id: :update_equipment_stat_form do %>
   <%= hidden_field_tag 'equipment_stat[stat_id]', '', id: :update_equipment_stat_stat %>
   <%= hidden_field_tag 'equipment_stat[modifier]', '', id: :update_equipment_stat_modifier %>
   <%= hidden_field_tag 'equipment_stat[equipment_id]', @equipment.id %>
   <%= hidden_field_tag 'equipment_stat_id', '', id: :update_equipment_stat_id %>
 <% end %>
+<%= form_tag admin_equipment_stat_path(@equipment), method: :delete,
+    remote: true, id: :delete_equipment_stat_form %>
 </section>
 <script>
   jQuery(function($) {
+    // selectors
     $s = {}
+    $s['equipment_price'] = $("[data-role=equipment_price]")
     $s['input_row'] = $("tr[data-role=edit_equipment_attributes]")
     $s['input_stat'] = $("#edit_equipment_stat_stat")
     $s['input_modifier'] = $("#edit_equipment_stat_modifier")
-    $s['input_submit'] = $("#edit_equipment_stat_submit")
+
+    $s['input_buttons_cell'] = $('[data-role=buttons]', $s['input_row'])
+
+    $s['new_button'] = $("[data-role=save]")
 
     $s['new_form'] = $("#new_equipment_stat_form")
     $s['new_stat'] = $("#new_equipment_stat_stat")
     $s['new_modifier'] = $("#new_equipment_stat_modifier")
 
+    $s['edit_button'] = $('[data-role=edit]')
+    $s['update_button'] = $('[data-role=update]')
+    $s['cancel_button'] = $('[data-role=cancel]')
+
+    $s['update_form'] = $("#update_equipment_stat_form")
+    $s['update_stat'] = $("#update_equipment_stat_stat")
+    $s['update_equipment_stat_id'] = $("#update_equipment_stat_id")
+    $s['update_modifier'] = $("#update_equipment_stat_modifier")
+
+    $s['remove_button'] = $('[data-role=remove]')
+    $s['remove_form'] = $('#delete_equipment_stat_form')
+
     test_selectors($s, {verbose: false})
 
-    $s['new_form'].bind("ajax:success", receive_new_equipment_stat)
-    $s['input_submit'].click(send_new_equipment_stat)
+    // html snippets
+    $html = {}
+    $html['new_button'] = '<button data-role="save">Save</button>'
+    $html['edit_button'] = '<button data-role="edit">Edit</button>'
+    $html['update_button'] = '<button data-role="update">Update</button>'
+    $html['cancel_button'] = '<button data-role="cancel">Cancel</button>'
+    $html['remove_button'] = '<button data-role="remove">Remove</button>'
 
+    // events
+    $s['new_form'].bind("ajax:success", receive_new_equipment_stat)
+    $s['new_button'].live('click', send_new_equipment_stat)
+    $s['edit_button'].live('click', edit_equipment_stat)
+    $s['update_button'].live('click', send_update_equipment_stat)
+    $s['update_form'].live('ajax:success', receive_update_equipment_stat)
+    $s['cancel_button'].live('click', cancel_edit_equipment_stat)
+    $s['remove_button'].live('click', send_delete_equipment_stat)
+    $s['remove_form'].live('ajax:success', receive_delete_equipment_stat)
+
+    // new
     function send_new_equipment_stat(){
+      $s['new_button'].attr('disabled', 'disabled')
       $s['new_stat'].val($s['input_stat'].val());
       $s['new_modifier'].val($s['input_modifier'].val());
       $s['new_form'].submit()
     }
+
     function receive_new_equipment_stat(event, data){
-      console.log(data)
       $('<tr data-equipment_stat="' + data.equipment_stat.id + '">'+
-        '<td data-role="stat">' + data.equipment_stat.stat_id + '</td>'+
+        '<td data-role="stat" data-stat_id="' + data.equipment_stat.stat_id + '">' + data.equipment_stat.stat_name + '</td>'+
         '<td data-role="modifier">' + data.equipment_stat.modifier + '</td>'+
-        '<td data-role="price"></td>'+
-        '</tr>').insertBefore($s['input_row']);
+        '<td data-role="price">' + data.equipment_stat.price + '</td>'+
+        '<td>' + $html['edit_button'] + ' | ' + $html['remove_button'] + '</td>'+
+        '</tr>').insertBefore($s['input_row'])
+      $s['new_button'].removeAttr('disabled')
+      update_equipment_price(data.equipment.price)
     }
-    function send_update_equipement_stat(){
 
-    }
-    function receive_update_equipment_stat(){
+    // edit / update
+    function edit_equipment_stat(event){
+      $clicked = $(event.target)
+      $row = $clicked.closest('tr')
+      var stat = {}
+      stat.id = $row.attr('data-equipment_stat')
+      stat.stat = $row.find('[data-role=stat]').attr('data-stat_id')
+      stat.modifier = $row.find('[data-role=modifier]').text()
 
+      $s['input_stat'].val(stat.stat)
+      $s['input_modifier'].val(stat.modifier)
+      $row.hide()
+      $s['input_row'].insertBefore($row)
+
+      var equipment_stat_id = $row.attr('data-equipment_stat')
+      $s['update_equipment_stat_id'].val(equipment_stat_id)
+      $s['update_form'][0].action = $s['update_form'][0].action.replace(/\d+$/, equipment_stat_id)
+
+      $s['input_buttons_cell'].html($html['update_button'] + ' | ' + $html['cancel_button'])
     }
+
+    function cancel_edit_equipment_stat(event){
+      $clicked = $(event.target)
+      $row = $clicked.closest('tr')
+      $row.next().show()
+      reset_input_row()
+    }
+
+    function send_update_equipment_stat(){
+      $s['update_button'].attr('disabled', 'disabled')
+      $s['update_stat'].val($s['input_stat'].val());
+      $s['update_modifier'].val($s['input_modifier'].val());
+      $s['update_form'].submit()
+    }
+
+    function receive_update_equipment_stat(event, data){
+      var $updated_row = $s['input_row'].next()
+      $updated_row.find('td[data-role=stat]').attr('data-stat_id', data.equipment_stat.stat_id).text(data.equipment_stat.stat_name)
+      $updated_row.find('td[data-role=modifier]').text(data.equipment_stat.modifier)
+      $updated_row.find('td[data-role=price]').text(data.equipment_stat.price)
+      update_equipment_price(data.equipment.price)
+      $updated_row.show()
+      reset_input_row()
+    }
+
+    // delete
+    function send_delete_equipment_stat(){
+      $t = $(this)
+      var id = $t.closest('tr').attr('data-equipment_stat')
+      var frm = $s['remove_form']
+      var action = frm[0].action
+      frm[0].action = action.replace(/\d+$/, id)
+      $s['remove_form'].submit()
+      $t.attr('disabled', 'disabled')
+    }
+
+    function receive_delete_equipment_stat(event, data){
+      if(data.success){
+        $('tr[data-equipment_stat=' + data.equipment_stat.id + ']').remove()
+      }
+      update_equipment_price(data.equipment.price)
+    }
+
+    // lib
+    function update_equipment_price(price){
+      $s['equipment_price'].text(price)
+    }
+
+    function reset_input_row(){
+      $s['input_stat'].val(false)
+      $s['input_modifier'].val(0)
+      $s['input_row'].appendTo($s['input_row'].parent())
+      $s['input_buttons_cell'].html($html['new_button'])
+    }
+
     function test_selectors(selectors, options){
       var defaults = {
         verbose: false

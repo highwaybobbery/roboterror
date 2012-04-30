@@ -3,7 +3,6 @@ require "spork"
 
 require 'cucumber/rails'
 Spork.prefork do
- load "#{Rails.root}/db/seeds.rb"
 
   Capybara.default_selector = :css
   ActionController::Base.allow_rescue = false
@@ -21,5 +20,8 @@ Spork.prefork do
 end
 
 Spork.each_run do
+  Before do
+    load "#{Rails.root}/db/seeds.rb"
+  end
 end
 

@@ -11,7 +11,7 @@ class AdminsEquipmentsController < ApplicationController
     @equipment = Equipment.new(params[:equipment])
 
     if (@equipment.save)
-      redirect_to new_admin_equipment_stat_path(@equipment)
+      redirect_to edit_admin_equipment_path(@equipment)
     else
       render :new
     end
@@ -20,6 +20,6 @@ class AdminsEquipmentsController < ApplicationController
   def edit
     @equipment = Equipment.find(params[:id])
     @stats = Stat.all
-    @equipment_stat = EquipmentStat.all
+    @equipment_stats = EquipmentStat.find_all_by_equipment_id(params[:id])
   end
 end

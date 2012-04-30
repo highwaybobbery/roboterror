@@ -30,4 +30,22 @@ describe EquipmentStat do
       @equipment_stat.price.should == 30
     end
   end
+
+  describe "#as_json" do
+    before do
+      @stat = create(:stat, price: 3, price_growth: 0.5)
+      @equipment = create(:equipment)
+      @equipment_stat = create(:equipment_stat, modifier: 3, stat: @stat, equipment: @equipment)
+    end
+
+    it "should have the right elements" do
+      json = @equipment_stat.as_json
+      json.should include 'id'
+      json.should include 'stat_id'
+      json.should include 'stat_name'
+      json.should include 'equipment_id'
+      json.should include 'modifier'
+      json.should include 'price'
+    end
+  end
 end
