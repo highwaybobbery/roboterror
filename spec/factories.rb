@@ -34,12 +34,22 @@ FactoryGirl.define do
   factory :equipment do
     name { Factory.next(:equipment_name) }
     price 0
+    chassis { Factory.create(:chassis) }
+    equipment_type { Factory.create(:equipment_type) }
+  end
+
+  factory :equipment_type do
+    name 'Arm'
   end
 
   factory :stat do
     name 'pep'
     price 1
     price_growth 1.5
+  end
+
+  factory :chassis do
+    name 'Medium'
   end
 
   factory :equipment_stat do

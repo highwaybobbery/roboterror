@@ -3,6 +3,15 @@ Chassis.create([
   {name: 'Large'}, {name: 'Medium'}, {name: 'Small'}
 ], :without_protection => true)
 
+EquipmentType.delete_all
+EquipmentType.create([
+  {name: 'Primary Weapon'},
+  {name: 'Secondary Weapon'},
+  {name: 'Power Core'},
+  {name: 'Legs'},
+  {name: 'Head'}
+], :without_protection => true)
+
 Stat.delete_all
 Stat.create([
   {name: 'health', price: 1, price_growth: 0.1},

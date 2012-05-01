@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120430200202) do
+ActiveRecord::Schema.define(:version => 20120501020547) do
 
   create_table "chasses", :force => true do |t|
     t.string   "name"
@@ -27,12 +27,20 @@ ActiveRecord::Schema.define(:version => 20120430200202) do
     t.datetime "updated_at",   :null => false
   end
 
+  create_table "equipment_types", :force => true do |t|
+    t.string "name", :null => false
+  end
+
   create_table "equipments", :force => true do |t|
     t.string   "name"
-    t.integer  "price",      :default => 0
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.integer  "price",             :default => 0
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.integer  "chassis_id",                       :null => false
+    t.integer  "equipment_type_id",                :null => false
   end
+
+  add_index "equipments", ["chassis_id", "equipment_type_id"], :name => "index_equipments_on_chassis_id_and_type_id"
 
   create_table "inventories", :force => true do |t|
     t.integer  "equipment_id"

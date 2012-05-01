@@ -1,6 +1,8 @@
 Then /^I create equipment$/ do
   click_link "New Equipment"
   fill_in "Name", :with => "Super Soaker"
+  select "Primary Weapon", from: 'Type'
+  select "Medium", from: 'Chassis'
   click_button "Save"
 end
 

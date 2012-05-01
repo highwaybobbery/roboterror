@@ -1,7 +1,13 @@
 <%= render 'admins/navigation' %>
 <section>
 <%= semantic_form_for @equipment, :url => admin_equipments_path do |form| %>
-  <%= form.input :name %>
-  <%= form.action :submit, :as => :button, :label => 'Save' %>
+  <%= form.inputs do %>
+    <%= form.input :name %>
+    <%= form.input :equipment_type, label: 'Type',  collection: @equipment_types %>
+    <%= form.input :chassis, collection: @chasses %>
+  <% end %>
+  <%= form.actions do %>
+    <%= form.action :submit, :as => :button, :label => 'Save' %>
+  <% end %>
 <% end %>
 </section>

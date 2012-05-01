@@ -7,14 +7,20 @@ describe Equipment do
 
   # Attributes
   it{ should allow_mass_assignment_of(:name) }
+  it{ should allow_mass_assignment_of(:equipment_type_id) }
+  it{ should allow_mass_assignment_of(:chassis_id) }
 
   # Associations
   it{ should have_many(:inventories).dependent(:destroy) }
   it{ should have_many(:users).through(:inventories) }
   it{ should have_many(:equipment_stats).dependent(:destroy) }
+  it{ should belong_to(:chassis) }
+  it{ should belong_to(:equipment_type) }
 
   # Validations
   it{ should validate_presence_of(:name) }
+  it{ should validate_presence_of(:chassis) }
+  it{ should validate_presence_of(:equipment_type) }
 
   describe "#calculate_price" do
     before do
