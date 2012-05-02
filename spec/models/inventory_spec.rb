@@ -16,4 +16,18 @@ describe Inventory do
   it{ should belong_to :user }
   it{ should belong_to :equipment }
   it{ should belong_to :robot }
+
+  describe "#unassigned" do
+    before do
+      @user = create(:user)
+      @robot = create(:robot, user: @user)
+      @inventory1 = create(:inventory, robot: @robot, user: @user)
+      @inventory2 = create(:inventory, user: @user)
+      @inventory3 = create(:inventory)
+    end
+
+    it "should return the inventories that are not assigned to a robot" do
+      @user.inventories.unassigned.should == [@inventory2]
+    end
+  end
 end

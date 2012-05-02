@@ -1,3 +1,7 @@
+When /^I visit the homepage$/ do
+  visit root_path
+end
+
 When /^I visit the admin homepage$/ do
   visit root_path
   click_link "Admin"

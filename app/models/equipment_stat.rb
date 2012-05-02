@@ -14,6 +14,7 @@ class EquipmentStat < ActiveRecord::Base
   # Callbacks
   after_save :update_equipment_price
   after_destroy :update_equipment_price
+
   def as_json(options={})
     {
       'id' => self.id,

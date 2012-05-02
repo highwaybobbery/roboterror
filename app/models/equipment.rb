@@ -19,4 +19,12 @@ class Equipment < ActiveRecord::Base
     self.price = equipment_stats.collect(&:price).sum
     self.save
   end
+
+  def calculate_stats
+    stats = {}
+    equipment_stats.each do |equipment_stat|
+      stats[equipment_stat.stat.name.to_sym] = equipment_stat.modifier
+    end
+    stats
+  end
 end

@@ -1,4 +1,49 @@
+<section class="left half">
+<h2>Configure Your Robot</h2>
 <%= semantic_form_for @robot do |form| %>
-  <%= form.input :name %>
-  <%= form.button "ReDeployz!", action: "submit" %>
+  <%= form.inputs do %>
+    <%= form.input :name %>
+  <% end %>
+  <%= form.actions do %>
+    <%= form.action :submit, label: "ReDeployz!" %>
+  <% end %>
 <% end %>
+</section>
+<section class="right half">
+<h3>Current Stats</h3>
+<% @stats.each do |stat| %>
+  <div data-stat_id="<%= stat.id %>">
+    <span data-role="name"><%= stat.name %></span>
+    <span data-role="value"><%= @robot_stats[stat.name] %></span>
+  </div>
+<% end %>
+</section>
+<section class="left half">
+<h3>Equipment Slots</h3>
+<% @types.each do |type| %>
+  <div data-type_id="<%= type.id %>">
+    <span data-role="name"><%= type.name %></span>
+    <div data-role="equipment">
+      <% if @robot.has_type_equipped?(type.id)  %>
+        <%= @robot.equipment_of_type(type.id) %>
+      <% else %>
+        - Empty -
+        <button>Load</button>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+</section>
+<section class="right half">
+<h3>Inventory</h3>
+<div data-role="inventory">
+  <% @inventories.unassigned.each do |inventory| %>
+    <div data-inventory_id="<%= inventory.id %>">
+      <div data-equipment_id="<%= inventory.equipment_id %>">
+        <%= "#{inventory.equipment.name} - #{inventory.equipment.price} - #{inventory.equipment.equipment_type.name}" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+</section>
+
