@@ -8,6 +8,8 @@ Roboterror::Application.routes.draw do
     end
   end
 
-  resources :robots
+  resources :robots do
+    resources :inventories, controller: 'robot_inventories'
+  end
   resources :inventories, only: ['new', 'create']
 end

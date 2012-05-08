@@ -57,7 +57,7 @@ describe Robot do
     end
 
     it "returns a hash combining the stats of all equipment" do
-      @robot.calculate_stats.should == {health: 30, strength: 9, speed: 10}
+      @robot.calculate_stats.should == {@health.id => 30, @strength.id =>  9, @speed.id => 10}
     end
 
     describe "finding associated equipment by type" do
@@ -67,10 +67,10 @@ describe Robot do
         @robot = create(:robot)
       end
 
-      describe "#has_type_equipped?" do
+      describe "#euipped_with?" do
         context "with no equipment" do
           it "should return false" do
-            @robot.has_type_equipped?(@type1.id).should == false
+            @robot.equipped_with?(@type1).should == false
           end
         end
 
@@ -80,28 +80,11 @@ describe Robot do
           end
 
           it "should return true" do
-            @robot.has_type_equipped?(@type1.id).should == true
-          end
-        end
-      end
-
-      describe "#equipment_of_type" do
-        context "with no equipment" do
-          it "should return []" do
-            @robot.equipment_of_type(@type1).should == []
-          end
-        end
-
-        context "with equipment" do
-          before do
-            @inventory = create(:inventory, equipment: @equipment, robot: @robot)
-          end
-
-          it "should return a record" do
-            @robot.equipment_of_type(@type1).should == [@equipment]
+            @robot.equipped_with?(@type1).should == true
           end
         end
       end
     end
+
   end
 end

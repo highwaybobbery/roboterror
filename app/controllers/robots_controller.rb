@@ -22,7 +22,7 @@ class RobotsController < ApplicationController
     @robot = Robot.find(params[:id])
     @robot_stats = @robot.calculate_stats
     @stats = Stat.all
-    @types = EquipmentType.all
+    @equipment_types = EquipmentType.all
     @inventories = current_user.inventories
   end
 

@@ -23,7 +23,7 @@ class Equipment < ActiveRecord::Base
   def calculate_stats
     stats = {}
     equipment_stats.each do |equipment_stat|
-      stats[equipment_stat.stat.name.to_sym] = equipment_stat.modifier
+      stats[equipment_stat.stat.id] = equipment_stat.modifier
     end
     stats
   end

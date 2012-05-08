@@ -13,12 +13,8 @@ class Robot < ActiveRecord::Base
   validates :name, presence: true
   validates :user, presence: true
 
-  def has_type_equipped?(equipment_type_id)
-    equipments.where(:equipment_type_id == equipment_type_id).count > 0
-  end
-
-  def equipment_of_type(equipment_type_id)
-    equipments.where(:equipment_type_id == equipment_type_id)
+  def equipped_with?(equipment_type)
+    equipments.exists? equipment_type_id: equipment_type.id
   end
 
   def calculate_price
@@ -29,8 +25,7 @@ class Robot < ActiveRecord::Base
     stats = {}
     equipments.each do |equipment|
       equipment_stats = equipment.calculate_stats
-      stats.merge!(equipment_stats) {|key,src,addend|
-        src + addend}
+      stats.merge!(equipment_stats) {|key,src,addend| src + addend}
     end
     stats
   end

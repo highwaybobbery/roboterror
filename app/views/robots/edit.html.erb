@@ -11,39 +11,186 @@
 </section>
 <section class="right half">
 <h3>Current Stats</h3>
+<div data-role="robot_stats">
 <% @stats.each do |stat| %>
   <div data-stat_id="<%= stat.id %>">
     <span data-role="name"><%= stat.name %></span>
-    <span data-role="value"><%= @robot_stats[stat.name] %></span>
+    <span data-role="value"><%= @robot_stats[stat.id] || 0 %></span>
   </div>
 <% end %>
+</div>
 </section>
+
 <section class="left half">
 <h3>Equipment Slots</h3>
-<% @types.each do |type| %>
-  <div data-type_id="<%= type.id %>">
-    <span data-role="name"><%= type.name %></span>
-    <div data-role="equipment">
-      <% if @robot.has_type_equipped?(type.id)  %>
-        <%= @robot.equipment_of_type(type.id) %>
+<div data-role="robot_equipment">
+<% @equipment_types.each do |type| %>
+  <div data-equipment_type_id="<%= type.id %>">
+    <div data-role="name"><%= type.name %></div>
+    <div data-role="content">
+      <% if @robot.equipped_with?(type)  %>
+        <% inventory = @robot.inventories.with_equipment_type(type).first %>
+        <div data-role="inventory_item" data-inventory_id="<%= inventory.id %>">
+          <%= inventory.equipment.name %>
+          <button data-role="unload_equipment">Unload</button>
+        </div>
       <% else %>
-        - Empty -
-        <button>Load</button>
+        <%= select_tag :inventory, options_for_select(@inventories.unassigned.with_equipment_type(type).collect {|inv| [inv.equipment.name , inv.id ] }), prompt: '- Empty -', id: "inventory_for_type_#{type.id}"  %>
+        <button data-role="load_equipment" disabled="disabled">Load</button>
       <% end %>
     </div>
   </div>
 <% end %>
+</div>
 </section>
+
 <section class="right half">
-<h3>Inventory</h3>
+<h3>Compatible Inventory</h3>
 <div data-role="inventory">
   <% @inventories.unassigned.each do |inventory| %>
-    <div data-inventory_id="<%= inventory.id %>">
-      <div data-equipment_id="<%= inventory.equipment_id %>">
-        <%= "#{inventory.equipment.name} - #{inventory.equipment.price} - #{inventory.equipment.equipment_type.name}" %>
+      <div data-inventory_id="<%= inventory.id %>" data-equipment_id="<%= inventory.equipment_id %>" data-equipment_type_id="<%= inventory.equipment.equipment_type_id %>">
+        <%= %{<span data-role="name">#{inventory.equipment.name}</span> - #{inventory.equipment.price} - #{inventory.equipment.equipment_type.name}}.html_safe %>
       </div>
-    </div>
   <% end %>
 </div>
 </section>
 
+<%= form_tag robot_inventories_path(@robot), method: :post, remote: true, id: 'attach_form' do %>
+  <% hidden_field_tag :inventory_id, '', id: 'attach_inventory' %>
+<% end %>
+
+<%= form_tag robot_inventory_path(@robot), method: :delete, remote: true, id: 'detach_form' do %>
+  <% hidden_field_tag :inventory_id, '', id: 'detach_inventory' %>
+<% end %>
+
+<script language="javascript">
+  jQuery(function($) {
+    // constants
+    EQUIPMENT_TYPES = <%= @equipment_types.to_json.html_safe %>
+    STATS = <%= @stats.to_json.html_safe %>
+
+    // selectors
+    $d = $(document)
+    $sel = {}
+    $sel['robot_stats_wrapper'] = '[data-role=robot_stats]'
+    $sel['robot_stats'] = $sel['robot_stats_wrapper'] + ' [data-stat_id]'
+    $sel['robot_equipment'] = '[data-role=robot_equipment]'
+    $sel['attach_selects'] = $sel['robot_equipment'] + ' select'
+    $sel['attach_buttons'] = '[data-role=load_equipment]'
+    $sel['attach_form'] = '#attach_form'
+    $sel['attach_inventory'] = '#attach_inventory'
+    $sel['detach_buttons'] = '[data-role=unload_equipment]'
+    $sel['detach_form'] = '#detach_form'
+    $sel['detach_inventory'] = '#detach_inventory'
+    $sel['inventory'] = '[data-role=inventory]'
+
+    $s = select_selectors($sel)
+
+    test_selectors($s, {verbose: false})
+    // events
+    $d.on('change', $sel['attach_selects'], toggle_load_button)
+    $d.on('click', $sel['attach_buttons'], send_load_equipment)
+    $d.on('ajax:success', $sel['attach_form'], receive_load_equipment)
+    $d.on('click', $sel['detach_buttons'], send_unload_equipment)
+    $d.on('ajax:success', $sel['detach_form'], receive_unload_equipment)
+
+    // html snippets
+    $html = {}
+    $html['attach_button'] = '<button data-role="load_equipment">Load</button>'
+    $html['detach_button'] = '<button data-role="unload_equipment">Unload</button>'
+
+    // attach equipment
+    function toggle_load_button(event) {
+      $t = $(this)
+      if($t.val() == ''){
+        $t.next('button').attr('disabled', 'disabled')
+      }else{
+        $t.next('button').removeAttr('disabled')
+      }
+    }
+
+    function send_load_equipment(event) {
+      $t = $(this)
+      inventory_id = $t.parent().find('select').val()
+      $s['attach_inventory'].val(inventory_id)
+      $s['attach_form'].submit()
+    }
+
+    function receive_load_equipment(event, data) {
+      $("[data-equipment_type_id='" + data.equipment.equipment_type_id + "'] [data-role=content]", $s['robot_equipment']).
+      html('<div data-role="inventory_item" data-inventory_id="' + data.inventory.id + '">' +  data.equipment.name + ' ' + $html['detach_button'] + '</div>')
+      show_robot_stats(data['robot_stats'])
+      $($sel['inventory'] + ' [data-inventory_id="' + data.inventory.id + '"]').remove()
+    }
+
+    // detach equipment
+    function send_unload_equipment(event){
+      $t = $(this)
+      inventory_id = $t.parent().attr('data-inventory_id')
+      $s['detach_inventory'].val(inventory_id)
+      $s['detach_form'].submit()
+    }
+
+    function receive_unload_equipment(event, data) {
+      show_robot_stats(data['robot_stats'])
+      show_equipment_selector(data.equipment.equipment_type_id)
+      show_inventory_item(data.inventory, data.equipment)
+    }
+
+    function show_inventory_item(inventory, equipment){
+      $s['inventory'].append(
+      '<div data-inventory_id="' + inventory.id + '" data-equipment_id="' + equipment + '" data-equipment_type_id="' + equipment.equipment_type_id + '">' +
+        '<span data-role="name">' + equipment.name + '</span> - ' + equipment.price + ' - ' + _.find(EQUIPMENT_TYPES, function(type){return type.id == equipment.equipment_type_id}).name +
+      '</div>'
+      )
+    }
+
+    function show_equipment_selector(equipment_type_id){
+      var $select = $('<select name="inventory" id="inventory_for_type_' + equipment_type_id + '">')
+      $($sel['inventory'] + " [data-equipment_type_id='" + equipment_type_id + "']").each(function(index, element){
+        $el = $(element)
+        var inventory_id = $el.attr('data-inventory_id')
+        var equipment_name = $el.find('[data-role=name]').text()
+        $select.append('<option value="' + inventory_id + '">' + equipment_name + '</option>')
+      })
+      $("[data-equipment_type_id='" + equipment_type_id + "'] [data-role=content]", $s['robot_equipment']).html($select).append($html['attach_button'])
+    }
+
+    function show_robot_stats(stats){
+      console.log(stats)
+      $s['robot_stats'].each(function(index, element){
+        $el = $(element)
+        stat_id = $el.attr('data-stat_id')
+        console.log(stats[stat_id])
+        $el.find('[data-role=value]').text(stats[stat_id] || 0)
+      })
+    }
+
+    function select_selectors(selectors){
+      $s = {}
+      for(i in selectors){
+        $s[i] = $(selectors[i])
+      }
+      return $s
+    }
+
+    function test_selectors(selectors, options){
+      var defaults = {
+        verbose: false
+      }
+      var settings = $.extend(defaults, options)
+
+      console.log("Begin Selector Tests")
+      for(i in selectors){
+        if(selectors[i].length == 0){
+          console.log("Selector Test Failed: " + i)
+        }else{
+          if(settings.verbose){
+            console.log("Passed: " + i)
+          }
+        }
+      }
+    }
+
+  })
+</script>

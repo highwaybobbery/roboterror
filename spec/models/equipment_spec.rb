@@ -45,7 +45,7 @@ describe Equipment do
       it "should return a hash of all stats" do
         create(:equipment_stat, modifier: 3, stat: @stat1, equipment: @equipment)
         create(:equipment_stat, modifier: 4, stat: @stat2, equipment: @equipment)
-        @equipment.calculate_stats.should == { spunk: 3, redness: 4 }
+        @equipment.calculate_stats.should == { @stat1.id  => 3, @stat2.id => 4 }
       end
     end
   end

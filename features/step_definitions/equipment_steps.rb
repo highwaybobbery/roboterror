@@ -53,12 +53,10 @@ Then /^I see my inventory$/ do
   inventories = Inventory.unassigned
   within('[data-role=inventory]') do
     inventories.each do |inventory|
-      within("[data-inventory_id='#{inventory.id}']") do
-        within("[data-equipment_id='#{inventory.equipment_id}']") do
-          page.should have_content(inventory.equipment.name)
-          page.should have_content(inventory.equipment.price)
-          page.should have_content(inventory.equipment.equipment_type.name)
-        end
+      within("[data-inventory_id='#{inventory.id}'][data-equipment_id='#{inventory.equipment_id}']") do
+        page.should have_content(inventory.equipment.name)
+        page.should have_content(inventory.equipment.price)
+        page.should have_content(inventory.equipment.equipment_type.name)
       end
     end
   end
@@ -66,13 +64,16 @@ end
 
 Then /^I see the equipment in my inventory$/ do
   equipment = Equipment.first
-  within("[data-inventory]") do
+  within("[data-role=inventory]") do
     page.should have_content(equipment.name)
   end
 end
 
 Then /^I do not see the equipment in my inventory$/ do
-    pending # express the regexp above with the code you wish you had
+  equipment = Equipment.first
+  within("[data-role=inventory]") do
+    page.should_not have_content(equipment.name)
+  end
 end
 
 Then /^I have spent credits$/ do

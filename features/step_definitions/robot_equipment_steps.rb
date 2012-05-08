@@ -16,13 +16,22 @@ Then /^I see default robot statistics$/ do
 end
 
 Then /^I see updated robot statistics$/ do
-    pending # express the regexp above with the code you wish you had
+  robot = Robot.first
+  stats = robot.calculate_stats
+
+  within("[data-role=robot_stats]") do
+    stats.each do |stat_id, value|
+      within("[data-stat_id='#{stat_id}']") do
+        page.should have_css("[data-role=value]", text: value.to_s)
+      end
+    end
+  end
 end
 
 Then /^I see empty equipment slots$/ do
   @types = EquipmentType.all
   @types.each do |type|
-    within("[data-type_id='#{type.id}']") do
+    within("[data-equipment_type_id='#{type.id}']") do
       page.should have_css('[data-role=name]', text: type.name)
       page.should have_content('Empty')
       page.should have_button('Load')
@@ -31,21 +40,39 @@ Then /^I see empty equipment slots$/ do
 end
 
 Then /^I add the equipment to my robot$/ do
-    pending # express the regexp above with the code you wish you had
+  inventory = Inventory.first
+  within("[data-role=robot_equipment]") do
+    within("[data-equipment_type_id='#{inventory.equipment.equipment_type.id}']") do
+      select(inventory.equipment.name, from: "inventory_for_type_#{inventory.equipment.equipment_type.id}")
+      click_button("Load")
+    end
+  end
 end
 
 Then /^I see the equipment on my robot$/ do
-    pending # express the regexp above with the code you wish you had
-end
-
-Then /^I cannot add another equipment of the same type$/ do
-    pending # express the regexp above with the code you wish you had
+  inventory = Inventory.first
+  within("[data-role=robot_equipment]") do
+    within("[data-equipment_type_id='#{inventory.equipment.equipment_type.id}']") do
+      page.should_not have_css("#inventory_for_type_#{inventory.equipment.equipment_type.id}")
+      page.should have_css("[data-inventory_id='#{inventory.id}']", text: inventory.equipment.name)
+    end
+  end
 end
 
 Then /^I detach the equipment$/ do
-    pending # express the regexp above with the code you wish you had
+  inventory = Inventory.first
+  within("[data-role=robot_equipment]") do
+    within("[data-equipment_type_id='#{inventory.equipment.equipment_type.id}']") do
+      click_button("Unload")
+    end
+  end
 end
 
 Then /^I do not see the equipment on my robot$/ do
-    pending # express the regexp above with the code you wish you had
+  inventory = Inventory.first
+  within("[data-role=robot_equipment]") do
+    within("[data-equipment_type_id='#{inventory.equipment.equipment_type.id}']") do
+      page.should_not have_css("[data-inventory_id='#{inventory.id}']", text: inventory.equipment.name)
+    end
+  end
 end
