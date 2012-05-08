@@ -22,7 +22,7 @@ class AdminsEquipmentsController < ApplicationController
   def edit
     @equipment = Equipment.find(params[:id])
     @stats = Stat.all
-    @equipment_stats = EquipmentStat.find_all_by_equipment_id(params[:id])
+    @equipment_stats = @equipment.equipment_stats
   end
 
   def destroy
