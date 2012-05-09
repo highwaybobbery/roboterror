@@ -86,7 +86,7 @@
 
     $s = select_selectors($sel)
 
-    test_selectors($s, {verbose: false})
+    //test_selectors($s, {verbose: false})
     // events
     $d.on('change', $sel['attach_selects'], toggle_load_button)
     $d.on('click', $sel['attach_buttons'], send_load_equipment)
@@ -117,10 +117,9 @@
     }
 
     function receive_load_equipment(event, data) {
-      $("[data-equipment_type_id='" + data.equipment.equipment_type_id + "'] [data-role=content]", $s['robot_equipment']).
-      html('<div data-role="inventory_item" data-inventory_id="' + data.inventory.id + '">' +  data.equipment.name + ' ' + $html['detach_button'] + '</div>')
-      show_robot_stats(data['robot_stats'])
-      $($sel['inventory'] + ' [data-inventory_id="' + data.inventory.id + '"]').remove()
+      show_loaded_inventory(data.inventory, data.equipment)
+      show_robot_stats(data.robot_stats)
+      remove_inventory(data.inventory)
     }
 
     // detach equipment
@@ -132,21 +131,35 @@
     }
 
     function receive_unload_equipment(event, data) {
-      show_robot_stats(data['robot_stats'])
-      show_equipment_selector(data.equipment.equipment_type_id)
+      show_robot_stats(data.robot_stats)
       show_inventory_item(data.inventory, data.equipment)
+      show_equipment_selector(data.equipment.equipment_type_id)
+    }
+
+    // Rendering
+    function remove_inventory(inventory){
+      $($sel['inventory'] + ' [data-inventory_id="' + inventory.id + '"]').remove()
+    }
+
+    function show_loaded_inventory(inventory, equipment){
+      $("[data-equipment_type_id='" + equipment.equipment_type_id + "'] [data-role=content]", $s['robot_equipment']).
+      html('<div data-role="inventory_item" data-inventory_id="' + inventory.id + '">' +
+        equipment.name + ' ' + $html['detach_button'] + '</div>')
     }
 
     function show_inventory_item(inventory, equipment){
       $s['inventory'].append(
-      '<div data-inventory_id="' + inventory.id + '" data-equipment_id="' + equipment + '" data-equipment_type_id="' + equipment.equipment_type_id + '">' +
-        '<span data-role="name">' + equipment.name + '</span> - ' + equipment.price + ' - ' + _.find(EQUIPMENT_TYPES, function(type){return type.id == equipment.equipment_type_id}).name +
+      '<div data-inventory_id="' + inventory.id + '" data-equipment_id="' + equipment +
+        '" data-equipment_type_id="' + equipment.equipment_type_id + '">' +
+        '<span data-role="name">' + equipment.name + '</span> - ' + equipment.price + ' - ' +
+         _.find(EQUIPMENT_TYPES, function(type){return type.id == equipment.equipment_type_id}).name +
       '</div>'
       )
     }
 
     function show_equipment_selector(equipment_type_id){
       var $select = $('<select name="inventory" id="inventory_for_type_' + equipment_type_id + '">')
+      $select.append('<option>- Empty -</option>')
       $($sel['inventory'] + " [data-equipment_type_id='" + equipment_type_id + "']").each(function(index, element){
         $el = $(element)
         var inventory_id = $el.attr('data-inventory_id')
@@ -164,32 +177,6 @@
         console.log(stats[stat_id])
         $el.find('[data-role=value]').text(stats[stat_id] || 0)
       })
-    }
-
-    function select_selectors(selectors){
-      $s = {}
-      for(i in selectors){
-        $s[i] = $(selectors[i])
-      }
-      return $s
-    }
-
-    function test_selectors(selectors, options){
-      var defaults = {
-        verbose: false
-      }
-      var settings = $.extend(defaults, options)
-
-      console.log("Begin Selector Tests")
-      for(i in selectors){
-        if(selectors[i].length == 0){
-          console.log("Selector Test Failed: " + i)
-        }else{
-          if(settings.verbose){
-            console.log("Passed: " + i)
-          }
-        }
-      }
     }
 
   })

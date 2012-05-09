@@ -47,33 +47,34 @@
 <script>
   jQuery(function($) {
     // selectors
-    $s = {}
-    $s['equipment_price'] = $("[data-role=equipment_price]")
-    $s['input_row'] = $("tr[data-role=edit_equipment_attributes]")
-    $s['input_stat'] = $("#edit_equipment_stat_stat")
-    $s['input_modifier'] = $("#edit_equipment_stat_modifier")
+    $d = $(document)
+    $sel = {}
+    $sel['equipment_price'] = "[data-role=equipment_price]"
+    $sel['input_row'] = "tr[data-role=edit_equipment_attributes]"
+    $sel['input_stat'] = "#edit_equipment_stat_stat"
+    $sel['input_modifier'] = "#edit_equipment_stat_modifier"
 
-    $s['input_buttons_cell'] = $('[data-role=buttons]', $s['input_row'])
+    $sel['input_buttons_cell'] = $sel['input_row'] + '[data-role=buttons]'
 
-    $s['new_button'] = $("[data-role=save]")
+    $sel['new_button'] = "[data-role=save]"
 
-    $s['new_form'] = $("#new_equipment_stat_form")
-    $s['new_stat'] = $("#new_equipment_stat_stat")
-    $s['new_modifier'] = $("#new_equipment_stat_modifier")
+    $sel['new_form'] = "#new_equipment_stat_form"
+    $sel['new_stat'] = "#new_equipment_stat_stat"
+    $sel['new_modifier'] = "#new_equipment_stat_modifier"
 
-    $s['edit_button'] = $('[data-role=edit]')
-    $s['update_button'] = $('[data-role=update]')
-    $s['cancel_button'] = $('[data-role=cancel]')
+    $sel['edit_button'] = '[data-role=edit]'
+    $sel['update_button'] = '[data-role=update]'
+    $sel['cancel_button'] = '[data-role=cancel]'
 
-    $s['update_form'] = $("#update_equipment_stat_form")
-    $s['update_stat'] = $("#update_equipment_stat_stat")
-    $s['update_equipment_stat_id'] = $("#update_equipment_stat_id")
-    $s['update_modifier'] = $("#update_equipment_stat_modifier")
+    $sel['update_form'] = "#update_equipment_stat_form"
+    $sel['update_stat'] = "#update_equipment_stat_stat"
+    $sel['update_equipment_stat_id'] = "#update_equipment_stat_id"
+    $sel['update_modifier'] = "#update_equipment_stat_modifier"
 
-    $s['remove_button'] = $('[data-role=remove]')
-    $s['remove_form'] = $('#delete_equipment_stat_form')
+    $sel['remove_button'] = '[data-role=remove]'
+    $sel['remove_form'] = '#delete_equipment_stat_form'
 
-    test_selectors($s, {verbose: false})
+    $s = select_selectors($sel)
 
     // html snippets
     $html = {}
@@ -84,14 +85,14 @@
     $html['remove_button'] = '<button data-role="remove">Remove</button>'
 
     // events
-    $s['new_form'].bind("ajax:success", receive_new_equipment_stat)
-    $s['new_button'].live('click', send_new_equipment_stat)
-    $s['edit_button'].live('click', edit_equipment_stat)
-    $s['update_button'].live('click', send_update_equipment_stat)
-    $s['update_form'].live('ajax:success', receive_update_equipment_stat)
-    $s['cancel_button'].live('click', cancel_edit_equipment_stat)
-    $s['remove_button'].live('click', send_delete_equipment_stat)
-    $s['remove_form'].live('ajax:success', receive_delete_equipment_stat)
+    $d.on("ajax:success", $sel['new_form'], receive_new_equipment_stat)
+    $d.on('click', $sel['new_button'], send_new_equipment_stat)
+    $d.on('click', $sel['edit_button'], edit_equipment_stat)
+    $d.on('click', $sel['update_button'], send_update_equipment_stat)
+    $d.on('ajax:success', $sel['update_form'] , receive_update_equipment_stat)
+    $d.on('click', $sel['cancel_button'], cancel_edit_equipment_stat)
+    $d.on('click', $sel['remove_button'], send_delete_equipment_stat)
+    $d.on('ajax:success', $sel['remove_form'], receive_delete_equipment_stat)
 
     // new
     function send_new_equipment_stat(){
@@ -102,13 +103,8 @@
     }
 
     function receive_new_equipment_stat(event, data){
-      $('<tr data-equipment_stat="' + data.equipment_stat.id + '">'+
-        '<td data-role="stat" data-stat_id="' + data.equipment_stat.stat_id + '">' + data.equipment_stat.stat_name + '</td>'+
-        '<td data-role="modifier">' + data.equipment_stat.modifier + '</td>'+
-        '<td data-role="price">' + data.equipment_stat.price + '</td>'+
-        '<td>' + $html['edit_button'] + ' | ' + $html['remove_button'] + '</td>'+
-        '</tr>').insertBefore($s['input_row'])
-      $s['new_button'].removeAttr('disabled')
+      show_new_equipment_stat(data.equipment_stat)
+      enable_element($s['new_button'])
       update_equipment_price(data.equipment.price)
     }
 
@@ -116,20 +112,13 @@
     function edit_equipment_stat(event){
       $clicked = $(event.target)
       $row = $clicked.closest('tr')
-      var stat = {}
-      stat.id = $row.attr('data-equipment_stat')
-      stat.stat = $row.find('[data-role=stat]').attr('data-stat_id')
-      stat.modifier = $row.find('[data-role=modifier]').text()
-
-      $s['input_stat'].val(stat.stat)
-      $s['input_modifier'].val(stat.modifier)
+      var equipment_stat = get_equipment_stat_from_row($row)
+      $s['input_stat'].val(equipment_stat.stat_id)
+      $s['input_modifier'].val(equipment_stat.modifier)
       $row.hide()
       $s['input_row'].insertBefore($row)
-
-      var equipment_stat_id = $row.attr('data-equipment_stat')
-      $s['update_equipment_stat_id'].val(equipment_stat_id)
-      $s['update_form'][0].action = $s['update_form'][0].action.replace(/\d+$/, equipment_stat_id)
-
+      $s['update_equipment_stat_id'].val(equipment_stat.id)
+      $s['update_form'][0].action = $s['update_form'][0].action.replace(/\d+$/, equipment_stat.id)
       $s['input_buttons_cell'].html($html['update_button'] + ' | ' + $html['cancel_button'])
     }
 
@@ -141,41 +130,58 @@
     }
 
     function send_update_equipment_stat(){
-      $s['update_button'].attr('disabled', 'disabled')
+      disable_element($s['update_button'])
       $s['update_stat'].val($s['input_stat'].val());
       $s['update_modifier'].val($s['input_modifier'].val());
       $s['update_form'].submit()
     }
 
     function receive_update_equipment_stat(event, data){
-      var $updated_row = $s['input_row'].next()
-      $updated_row.find('td[data-role=stat]').attr('data-stat_id', data.equipment_stat.stat_id).text(data.equipment_stat.stat_name)
-      $updated_row.find('td[data-role=modifier]').text(data.equipment_stat.modifier)
-      $updated_row.find('td[data-role=price]').text(data.equipment_stat.price)
+      var $row = $s['input_row'].next()
+      update_equipment_stat($row, data.euipment_stat)
       update_equipment_price(data.equipment.price)
-      $updated_row.show()
+      $row.show()
       reset_input_row()
     }
 
     // delete
     function send_delete_equipment_stat(){
       $t = $(this)
-      var id = $t.closest('tr').attr('data-equipment_stat')
-      var frm = $s['remove_form']
-      var action = frm[0].action
-      frm[0].action = action.replace(/\d+$/, id)
+      var id = $t.closest('tr').attr('data-equipment_stat_id')
+      $s['remove_form'][0].action = $s['remove_form'][0].action.replace(/\d+$/, id)
+      disable_element($t)
       $s['remove_form'].submit()
-      $t.attr('disabled', 'disabled')
     }
 
     function receive_delete_equipment_stat(event, data){
-      if(data.success){
-        $('tr[data-equipment_stat=' + data.equipment_stat.id + ']').remove()
-      }
+      $('tr[data-equipment_stat_id=' + data.equipment_stat.id + ']').remove()
       update_equipment_price(data.equipment.price)
     }
 
-    // lib
+    // render
+    function get_equipment_stat_from_row($row){
+      return {
+        id: $row.attr('data-equipment_stat_id'),
+        stat_id: $row.find('[data-role=stat]').attr('data-stat_id'),
+        modifier: $row.find('[data-role=modifier]').text()
+      }
+    }
+
+    function show_new_equipment_stat(equipment_stat){
+      $('<tr data-equipment_stat_id="' + equipment_stat.id + '">'+
+        '<td data-role="stat" data-stat_id="' + equipment_stat.stat_id + '">' + equipment_stat.stat_name + '</td>'+
+        '<td data-role="modifier">' + equipment_stat.modifier + '</td>'+
+        '<td data-role="price">' + equipment_stat.price + '</td>'+
+        '<td>' + $html['edit_button'] + ' | ' + $html['remove_button'] + '</td>'+
+        '</tr>').insertBefore($s['input_row'])
+    }
+
+    function update_equipment_stat_row($row, equipment_stat){
+      $row.find('td[data-role=stat]').attr('data-stat_id', equipment_stat.stat_id).text(equipment_stat.stat_name)
+      $row.find('td[data-role=modifier]').text(equipment_stat.modifier)
+      $row.find('td[data-role=price]').text(equipment_stat.price)
+    }
+
     function update_equipment_price(price){
       $s['equipment_price'].text(price)
     }
@@ -185,24 +191,6 @@
       $s['input_modifier'].val(0)
       $s['input_row'].appendTo($s['input_row'].parent())
       $s['input_buttons_cell'].html($html['new_button'])
-    }
-
-    function test_selectors(selectors, options){
-      var defaults = {
-        verbose: false
-      }
-      var settings = $.extend(defaults, options)
-
-      console.log("Begin Selector Tests")
-      for(i in selectors){
-        if(selectors[i].length == 0){
-          console.log("Selector Test Failed: " + i)
-        }else{
-          if(settings.verbose){
-            console.log("Passed: " + i)
-          }
-        }
-      }
     }
   });
 </script>
