@@ -11,13 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120501020547) do
-
-  create_table "chasses", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
+ActiveRecord::Schema.define(:version => 20120509035602) do
 
   create_table "equipment_stats", :force => true do |t|
     t.integer  "equipment_id", :null => false
@@ -36,11 +30,8 @@ ActiveRecord::Schema.define(:version => 20120501020547) do
     t.integer  "price",             :default => 0
     t.datetime "created_at",                       :null => false
     t.datetime "updated_at",                       :null => false
-    t.integer  "chassis_id",                       :null => false
     t.integer  "equipment_type_id",                :null => false
   end
-
-  add_index "equipments", ["chassis_id", "equipment_type_id"], :name => "index_equipments_on_chassis_id_and_type_id"
 
   create_table "inventories", :force => true do |t|
     t.integer  "equipment_id"
@@ -53,13 +44,13 @@ ActiveRecord::Schema.define(:version => 20120501020547) do
 
   create_table "robots", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
     t.integer  "user_id"
-    t.integer  "chassis_id"
+    t.integer  "won",        :default => 0, :null => false
+    t.integer  "lost",       :default => 0, :null => false
   end
 
-  add_index "robots", ["chassis_id"], :name => "index_robots_on_chassis_id"
   add_index "robots", ["user_id"], :name => "index_robots_on_user_id"
 
   create_table "stats", :force => true do |t|

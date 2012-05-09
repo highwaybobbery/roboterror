@@ -1,6 +1,6 @@
-<tr>
-  <td><%= link_to robot.name, robot_path(robot) %></td>
-  <td><span class="won">20</span>/<span class="lost">30</span></td>
-  <td class="green">§2,500</td>
+<tr data-robot_id="<%= robot.id %>">
+  <td data-role="name"><%= robot.name %></td>
+  <td><span class="won" data-role="won">0</span>/<span class="lost" data-role="lost">0</span></td>
+  <td class="money">§<span data-role="price"><%= robot.calculate_price %></span></td>
   <td><%= link_to "edit", edit_robot_path(robot) %> <%= link_to "delete", robot_path(robot), method: 'delete' %></td>
 </tr>

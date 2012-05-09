@@ -1,13 +1,8 @@
 FactoryGirl.define do
   # Factories
-  factory :chassis do
-    name { Factory.next(:chassis_name) }
-  end
-
   factory :equipment do
     name { Factory.next(:equipment_name) }
     price 0
-    chassis { Factory.create(:chassis) }
     equipment_type { Factory.create(:equipment_type) }
   end
 
@@ -29,7 +24,6 @@ FactoryGirl.define do
   factory :robot do
     user
 
-    chassis { Chassis.find_or_create_by_name('Medium') }
     name { Factory.next(:robot_name) }
   end
 
@@ -51,10 +45,6 @@ FactoryGirl.define do
   end
 
   # Sequences
-  sequence :chassis_name do |n|
-    "chassis#{n}"
-  end
-
   sequence :email do |n|
     "user#{n}@example.com"
   end

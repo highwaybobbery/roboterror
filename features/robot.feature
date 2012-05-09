@@ -20,8 +20,3 @@ Feature: As a user
     Then I see the robot configuration page
     When I visit the homepage
     Then I delete the robot
-
-  Scenario: View a robot
-    Then I see the robot configuration page
-    When I visit the homepage
-    Then I view the robot

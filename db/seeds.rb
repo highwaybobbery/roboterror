@@ -1,8 +1,3 @@
-Chassis.delete_all
-Chassis.create([
-  {name: 'Large'}, {name: 'Medium'}, {name: 'Small'}
-], :without_protection => true)
-
 EquipmentType.delete_all
 EquipmentType.create([
   {name: 'Primary Weapon'},

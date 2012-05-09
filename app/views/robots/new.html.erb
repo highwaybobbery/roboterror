@@ -2,7 +2,6 @@
   <h2>Create a new Robot</h2>
   <%= semantic_form_for @robot do |form| %>
     <%= form.input :name, label: "Robot name" %>
-    <%= form.input :chassis, as: "select" %>
     <%= form.submit "Deployz!!" %>
   <% end %>
 </section>

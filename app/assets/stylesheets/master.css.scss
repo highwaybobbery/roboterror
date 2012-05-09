@@ -51,29 +51,33 @@ body{
     }
     .branding {
       padding:5px 0 10px 0;
-
-      h1{
-        line-height: 1em;
-        margin: 0;
-        text-shadow:
+      a{
+        display:block;
+        text-decoration:none;
+        width: 200px;
+        h2{
+          line-height: 1em;
+          margin: 0;
+          text-shadow:
           -1px -1px 0 #f66,
-           1px -1px 0 #f66,
+          1px -1px 0 #f66,
           -1px 1px 0 #f66,
-           1px 1px 0 #f66;
-      }
-      h2{
-        color: white;
-        border: 2px black;
-        letter-spacing: 2px;
-        line-height: 1em;
-        margin: -7px 0 0 2px;
-        text-shadow:
-          -1px -1px 0 #999,
-          1px -1px 0 #999,
-          -1px 1px 0 #999,
-           1px 1px 0 #999;
-      }
-    }
+          1px 1px 0 #f66;
+       }
+       h3{
+         border: 2px black;
+         color: white;
+         letter-spacing: 2px;
+         line-height: 1em;
+         margin: -7px 0 0 2px;
+         text-shadow:
+         -1px -1px 0 #999,
+         1px -1px 0 #999,
+         -1px 1px 0 #999,
+         1px 1px 0 #999;
+       }
+     }
+   }
 
     fieldset{
       border: none;

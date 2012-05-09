@@ -4,7 +4,6 @@
   <%= form.inputs do %>
     <%= form.input :name %>
     <%= form.input :equipment_type, label: 'Type',  collection: @equipment_types %>
-    <%= form.input :chassis, collection: @chasses %>
   <% end %>
   <%= form.actions do %>
     <%= form.action :submit, :as => :button, :label => 'Save' %>

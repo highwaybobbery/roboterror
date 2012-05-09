@@ -1,7 +1,6 @@
 Given /^I create a robot$/ do
   click_link "Create a Robot"
   fill_in( "Robot name", with: "Robbie")
-  select("Medium", from: "Chassis")
   click_button( "Deployz!!" )
 end
 
@@ -22,11 +21,6 @@ Then /^I delete the robot$/ do
   name = Robot.first.name
   click_link "delete"
   page.should_not have_content(name)
-end
-
-Then /^I view the robot$/ do
-  name = Robot.first.name
-  click_link(name)
 end
 
 Given /^There is a robot$/ do

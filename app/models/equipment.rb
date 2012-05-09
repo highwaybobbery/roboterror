@@ -1,17 +1,15 @@
 class Equipment < ActiveRecord::Base
   # Attributes
-  attr_accessible :name, :equipment_type_id, :chassis_id
+  attr_accessible :name, :equipment_type_id
 
   # Associations
   has_many :inventories, dependent: :destroy
   has_many :users, through: :inventories
   has_many :equipment_stats, dependent: :destroy
-  belongs_to :chassis
   belongs_to :equipment_type
 
   # Validations
   validates_presence_of :name
-  validates_presence_of :chassis
   validates_presence_of :equipment_type
 
   def calculate_price

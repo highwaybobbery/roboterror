@@ -4,7 +4,6 @@ class AdminsEquipmentsController < ApplicationController
   end
 
   def new
-    @chasses = Chassis.all
     @equipment_types = EquipmentType.all
     @equipment = Equipment.new
   end

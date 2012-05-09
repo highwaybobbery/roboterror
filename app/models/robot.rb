@@ -1,15 +1,13 @@
 class Robot < ActiveRecord::Base
   # Attributes
-  attr_accessible :chassis_id, :name
+  attr_accessible :name
 
   # Associations
-  belongs_to :chassis
   belongs_to :user
   has_many :inventories
   has_many :equipments, through: :inventories
 
   # Validations
-  validates :chassis, presence: true
   validates :name, presence: true
   validates :user, presence: true
 
