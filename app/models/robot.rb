@@ -27,4 +27,8 @@ class Robot < ActiveRecord::Base
     end
     stats
   end
+
+  def self.not_owned_by(user)
+    where("user_id != #{user.id}")
+  end
 end

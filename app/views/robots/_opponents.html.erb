@@ -1,0 +1,8 @@
+<table data-role="opponents">
+  <tr>
+    <th>Opponent</th>
+    <th>Career Record</th>
+    <th colspan="2">Total Value</th>
+  </tr>
+  <%= render Robot.not_owned_by(current_user) %>
+</table>

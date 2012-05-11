@@ -1,0 +1,147 @@
+body
+  font-family: Tahoma, Geneva, sans-serif
+  color: #333
+
+div.page-wrapper
+  background: #efefef
+  border: 2px solid #ff6666
+  border-radius: 8px
+  display: block
+  margin: 0 auto
+  overflow: hidden
+  padding: 0px 10px 0px 10px
+  max-width: 980px
+
+h1, h2, h3
+  font-family: Impact, Charcoal, sans-serif
+  margin: .25em 0 .5em 0
+
+  a
+    color: #333
+    text-decoration: none
+
+h2, h3
+  color: #600
+
+p
+  margin: .5em 0
+
+a
+  color: #069
+  text-decoration: none
+
+.branding
+  padding: 5px 0 10px 0
+
+  a
+    display: block
+    text-decoration: none
+    width: 200px
+
+    h2
+      line-height: 1em
+      margin: 0
+      text-shadow: -1px -1px 0 #f66, 1px -1px 0 #f66, -1px 1px 0 #f66, 1px 1px 0 #f66
+
+    h3
+      border: 2px black
+      color: white
+      letter-spacing: 2px
+      line-height: 1em
+      margin: -7px 0 0 2px
+      text-shadow: -1px -1px 0 #999, 1px -1px 0 #999, -1px 1px 0 #999, 1px 1px 0 #999
+
+nav.top.right
+  background: #ddd
+  border-bottom-left-radius: 8px
+  border-top-right-radius: 6px
+  color: #666
+  display: inline-block
+  float: right
+  padding: 8px
+  position: relative
+  right: -10px
+
+  a
+    color: #666
+    text-decoration: none
+
+  .balance
+    color: #393
+    display: inline-block
+    padding-right: 5px
+
+fieldset
+  border: none
+  margin: 0
+  padding: 0
+
+  ol, ul
+    list-style-type: none
+    margin: 0
+    padding: 0
+
+    li
+      margin: 5px 0
+
+  label
+    display: inline-block
+    width: 100px
+
+section
+  background: #f3f3f3
+  border: 2px solid #ccc
+  border-radius: 4px
+  margin-bottom: 10px
+  padding: 5px 8px
+  position: relative
+
+  &.half
+    width: 465px
+  &.third
+    width: 300px
+    &.middle
+      float: left
+      margin-left: 10px
+
+table
+  border-spacing: 0
+  width: 100%
+  th, td
+    padding-right: 10px
+    white-space: nowrap
+    text-align: left
+    &.last
+      width: 100%
+    &.lost
+      text-decoration: line-through
+    &.right
+      text-align: right
+
+.half
+  width: 50%
+
+.money
+  color: #393
+
+.lost
+  color: #600
+
+.won
+  color: #060
+
+.right
+  float: right
+
+.left
+  float: left
+
+.clearfix
+  display: inline-block
+  &:after
+    content: "."
+    display: block
+    clear: both
+    visibility: hidden
+    line-height: 0
+    height: 0

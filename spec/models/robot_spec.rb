@@ -21,7 +21,7 @@ describe Robot do
 
   describe "#calculate_price" do
     before do
-      @robot = create(:robot)
+      @robot = build_stubbed(:robot)
       @equipment = create(:equipment_stat).equipment
       @inventory = create(:inventory, robot:  @robot, equipment: @equipment)
     end
@@ -33,7 +33,7 @@ describe Robot do
 
   describe "#calculate_stats" do
     before do
-      @robot = create(:robot)
+      @robot = build_stubbed(:robot)
 
       @health = create(:stat, name: 'health')
       @strength = create(:stat, name: 'strength')
@@ -58,32 +58,40 @@ describe Robot do
     it "returns a hash combining the stats of all equipment" do
       @robot.calculate_stats.should == {@health.id => 30, @strength.id =>  9, @speed.id => 10}
     end
+  end
 
-    describe "finding associated equipment by type" do
-      before do
-        @type1 = create(:equipment_type)
-        @equipment = create(:equipment, equipment_type: @type1)
-        @robot = create(:robot)
-      end
+  describe "#euipped_with?" do
+    let(:type) { create(:equipment_type) }
+    let(:equipment) { create(:equipment, equipment_type: type) }
+    let(:robot) { create(:robot) }
 
-      describe "#euipped_with?" do
-        context "with no equipment" do
-          it "should return false" do
-            @robot.equipped_with?(@type1).should == false
-          end
-        end
-
-        context "with equipment of type" do
-          before do
-            @inventory = create(:inventory, equipment: @equipment, robot: @robot)
-          end
-
-          it "should return true" do
-            @robot.equipped_with?(@type1).should == true
-          end
-        end
+    context "with no equipment" do
+      it "should return false" do
+        robot.equipped_with?(type).should == false
       end
     end
 
+    context "with equipment of type" do
+      before do
+        @inventory = create(:inventory, equipment: equipment, robot: robot)
+      end
+
+      it "should return true" do
+        robot.equipped_with?(type).should == true
+      end
+    end
+  end
+
+  describe ".not_owned_by" do
+    let(:user) { build_stubbed(:user) }
+    let(:robot) { create(:robot, user: user) }
+    let(:other_user) { build_stubbed(:user) }
+    let(:other_robot) { create(:robot, user: other_user) }
+
+    it "should only return the robot not owned by the user" do
+      robots = Robot.not_owned_by(user)
+      robots.should include(other_robot)
+      robots.should_not include(robot)
+    end
   end
 end

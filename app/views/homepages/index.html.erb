@@ -1,28 +1,7 @@
 <% if current_user %>
   <section class="half left">
     <h2>Pick a fight!</h2>
-    <table>
-      <tr>
-        <th>Opponent</th>
-        <th>Career Record</th>
-        <th>Total Value</th>
-      </tr>
-      <tr>
-        <td><a href="#">Jimmy The Hat</a></td>
-        <td><span class="won">20</span>/<span class="lost">30</span></td>
-        <td class="green">§2,500</td>
-      </tr>
-      <tr>
-        <td><a href="#">Leroy Jenkins</a></td>
-        <td><span class="won">20</span>/<span class="lost">30</span></td>
-        <td class="green">§1,500</td>
-      </tr>
-      <tr>
-        <td><a href="#">Tim Toady</a></td>
-        <td><span class="won">20</span>/<span class="lost">30</span></td>
-        <td class="green">§500</td>
-      </tr>
-    </table>
+    <%= render 'robots/opponents' %>
   </section>
   <section class="half right">
     <h2>Combat Log</h2>

@@ -25,5 +25,10 @@ Then /^I see a list of my robots$/ do
 end
 
 Then /^I see a list of other robots$/ do
-    pending # express the regexp above w
+  robots = Robot.not_owned_by(User.first)
+  within("[data-role=opponents]") do
+    robots.each do |robot|
+      page.should have_css("[data-robot_id='#{robot.id}']")
+    end
+  end
 end
