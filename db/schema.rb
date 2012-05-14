@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120509035602) do
+ActiveRecord::Schema.define(:version => 20120511152946) do
 
   create_table "equipment_stats", :force => true do |t|
     t.integer  "equipment_id", :null => false
@@ -31,6 +31,22 @@ ActiveRecord::Schema.define(:version => 20120509035602) do
     t.datetime "created_at",                       :null => false
     t.datetime "updated_at",                       :null => false
     t.integer  "equipment_type_id",                :null => false
+  end
+
+  create_table "fight_results", :force => true do |t|
+    t.integer  "opponent_id",   :null => false
+    t.integer  "attacker_id",   :null => false
+    t.integer  "winner_id",     :null => false
+    t.integer  "loser_id",      :null => false
+    t.integer  "winner_hp",     :null => false
+    t.integer  "elapsed_time",  :null => false
+    t.string   "timeline",      :null => false
+    t.integer  "winner_xp",     :null => false
+    t.integer  "winner_payout", :null => false
+    t.integer  "loser_xp",      :null => false
+    t.integer  "loser_payout",  :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "inventories", :force => true do |t|

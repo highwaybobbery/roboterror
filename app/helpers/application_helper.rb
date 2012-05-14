@@ -5,7 +5,7 @@ module ApplicationHelper
 
 def admin_link
   if current_user_is_admin?
-    link_to "Admin", admin_path
+    "| #{link_to("Admin", admin_path)}".html_safe
   end
 end
 

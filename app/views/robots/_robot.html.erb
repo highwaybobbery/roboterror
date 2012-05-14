@@ -2,5 +2,13 @@
   <td data-role="name"><%= robot.name %></td>
   <td><span class="won" data-role="won">0</span>/<span class="lost" data-role="lost">0</span></td>
   <td class="money">§<span data-role="price"><%= robot.calculate_price %></span></td>
-  <td><%= link_to "edit", edit_robot_path(robot) %> <%= link_to "delete", robot_path(robot), method: 'delete' %></td>
+  <td>
+  <% if current_user.owns(robot) %>
+    <%= link_to "edit", edit_robot_path(robot), data: { role: 'edit' }  %>
+    <%= link_to "delete", robot_path(robot), method: 'delete', data: { role: 'delete' } %>
+ <% else %>
+   <%= link_to "view", robot_path(robot), data: { role: 'view' } %>
+   <%= link_to "fight", new_robot_fight_path(robot), data: { role: 'fight' } %>
+ <% end %>
+  </td>
 </tr>

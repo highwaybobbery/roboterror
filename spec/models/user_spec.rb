@@ -28,4 +28,24 @@ describe User do
       end
     end
   end
+
+  describe "#owns" do
+    let (:user) { build_stubbed(:user) }
+    let (:robot) { build_stubbed(:robot, user: user) }
+    context "where the user is the owner" do
+
+      it "returns true" do
+        user.owns(robot).should be_true
+      end
+    end
+
+    context "where the user is not the owner" do
+      let (:other_user) { build_stubbed(:user) }
+
+      it "returns false" do
+        other_user.owns(robot).should be_false
+      end
+    end
+
+  end
 end

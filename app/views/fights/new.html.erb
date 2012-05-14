@@ -1,0 +1,17 @@
+<section data-role="opponent">
+  <h2>Your Opponent</h2>
+  <%= render @opponent %>
+</section>
+<section data-role="attacker">
+  <h2>Select a Robot from Your Fleet</h2>
+  <%= semantic_form_for @fight_result, url: robot_fights_path(@opponent), method: :post do |f| %>
+    <%= f.inputs do %>
+      <%= f.input :attacker, as: :select, collection: current_user.robots %>
+      <%= f.input :opponent_id, as: :hidden, value: @opponent.id %>
+    <% end %>
+    <%= f.actions do %>
+      <%= f.action :submit, as: :button, label: 'Fight' %>
+      <%= f.action :cancel, as: :link, label: 'Cancel' %>
+    <% end %>
+  <% end %>
+</section>

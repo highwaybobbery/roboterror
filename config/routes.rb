@@ -10,6 +10,9 @@ Roboterror::Application.routes.draw do
 
   resources :robots do
     resources :inventories, controller: 'robot_inventories'
+    resources :fights, only:  ['new', 'create']
+    resources :fight_results, only:['show']
   end
+
   resources :inventories, only: ['new', 'create']
 end

@@ -18,4 +18,8 @@ class User < ActiveRecord::Base
     self.balance -= amount
     self.save
   end
+
+  def owns thing
+    thing.user_id == id
+  end
 end

@@ -19,6 +19,12 @@ Then /^I see a list of my robots$/ do
         page.should have_css("[data-role=won]", text: robot.won.to_s)
         page.should have_css("[data-role=lost]", text: robot.lost.to_s)
         page.should have_css("[data-role=price]", text: robot.calculate_price.to_s)
+
+        page.should have_css("[data-role=edit]")
+        page.should have_css("[data-role=delete]")
+
+        page.should_not have_css("[data-role=view]")
+        page.should_not have_css("[data-role=fight]")
       end
     end
   end
@@ -28,7 +34,18 @@ Then /^I see a list of other robots$/ do
   robots = Robot.not_owned_by(User.first)
   within("[data-role=opponents]") do
     robots.each do |robot|
-      page.should have_css("[data-robot_id='#{robot.id}']")
+      within("[data-robot_id='#{robot.id}']") do
+        page.should have_css("[data-role=name]", text: robot.name)
+        page.should have_css("[data-role=won]", text: robot.won.to_s)
+        page.should have_css("[data-role=lost]", text: robot.lost.to_s)
+        page.should have_css("[data-role=price]", text: robot.calculate_price.to_s)
+
+        page.should_not have_css("[data-role=edit]")
+        page.should_not have_css("[data-role=delete]")
+
+        page.should have_css("[data-role=view]")
+        page.should have_css("[data-role=fight]")
+      end
     end
   end
 end
